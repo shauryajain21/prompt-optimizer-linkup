@@ -659,6 +659,49 @@ Search for and compile the following signals:
 
 Focus on factual signals only. Do not generate scores—return the raw data points.`}
                   />
+
+                  <SchemaBlock
+                    title="lead-scoring-schema.json"
+                    code={`{
+  "type": "object",
+  "properties": {
+    "company_name": { "type": "string" },
+    "domain": { "type": "string" },
+    "hiring_activity": {
+      "type": "object",
+      "properties": {
+        "open_roles_count": { "type": "integer" },
+        "departments_hiring": { "type": "array", "items": { "type": "string" } },
+        "notable_roles": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "growth_signals": {
+      "type": "object",
+      "properties": {
+        "recent_funding": { "type": "string" },
+        "funding_amount": { "type": "string" },
+        "revenue_indicators": { "type": "string" },
+        "expansion_news": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "technology_stack": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "trigger_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "event_type": { "type": "string" },
+          "description": { "type": "string" },
+          "date": { "type": "string" }
+        }
+      }
+    }
+  }
+}`}
+                  />
                 </div>
               </div>
             </div>
