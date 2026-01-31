@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --linkup-green: #6B7C4C;
+  --linkup-green-light: #8A9B6E;
+  --linkup-green-dark: #5A6940;
+  --linkup-cream: #F5F3EF;
+  --linkup-beige: #EBE8E2;
+  --linkup-olive: #4A5A2C;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #E8E6E1;
+  color: #1F2937;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Textarea styling */
+textarea {
+  resize: none;
+}
+
+/* Code block styling */
+.code-block {
+  background: #1E1E1E;
+  border-radius: 8px;
+  font-family: 'Monaco', 'Menlo', monospace;
+}
+
+/* Button transitions */
+.btn-primary {
+  @apply bg-linkup-green text-white px-4 py-2 rounded-lg font-medium transition-all duration-200;
+}
+
+.btn-primary:hover {
+  @apply bg-linkup-green-hover shadow-md;
+}
+
+.btn-primary:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Card styling */
+.card {
+  @apply bg-white rounded-xl border border-linkup-border shadow-sm;
+}
+
+/* Sidebar link styling */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  color: #5A5A58;
+  transition: all 150ms ease;
+}
+
+.sidebar-link:hover {
+  background-color: #EBE8E2;
+  color: #1F2937;
+}
+
+.sidebar-link.active {
+  background-color: #6B7C4C;
+  color: white;
+  font-weight: 500;
+}
+
+/* Loading animation */
+@keyframes pulse-opacity {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.loading-pulse {
+  animation: pulse-opacity 1.5s ease-in-out infinite;
+}
+
+/* Smooth height transition for output */
+.output-container {
+  transition: height 0.3s ease-out, opacity 0.2s ease-out;
+}
+
+/* Smooth slide up animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideUp {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
+}
