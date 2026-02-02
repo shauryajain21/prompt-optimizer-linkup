@@ -344,12 +344,8 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f5f0e6] via-[#ebe6dc] to-[#e0dbd1] relative">
-      {/* Dotted pattern overlay */}
-      <div className="absolute inset-0 dotted-bg opacity-30 pointer-events-none" />
-
-      {/* Content wrapper */}
-      <div className="relative z-10">
+    <div className="min-h-screen bg-[#E8E6E1]">
+      <div>
       {/* Minimal Header */}
       <header className="pt-6 pb-4">
         <div className="max-w-4xl mx-auto px-6">

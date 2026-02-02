@@ -189,9 +189,9 @@ const useCases: UseCase[] = [
   },
   {
     id: "product-listings",
-    title: "How to enrich product listings with Linkup",
-    shortTitle: "Product Listings",
-    description: "Automatically enrich product catalogs with pricing, specs, and availability data from across the web.",
+    title: "How to enrich product listings with Linkup [Procurement/Marketplace/Retail]",
+    shortTitle: "Product Enrichment",
+    description: "Automatically enrich product catalogs with pricing, specs, images, and availability data from manufacturer sites and across the web.",
     tag: "Linkup",
     href: "/use-cases/product-listings",
     enabled: true,
@@ -244,12 +244,8 @@ export default function UseCasesPage() {
   const enabledCases = useCases.filter(uc => uc.enabled && !uc.featured);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f5f0e6] via-[#ebe6dc] to-[#e0dbd1] relative">
-      {/* Dotted pattern overlay */}
-      <div className="absolute inset-0 dotted-bg opacity-30 pointer-events-none" />
-
-      {/* Content wrapper */}
-      <div className="relative z-10">
+    <div className="min-h-screen bg-[#E8E6E1]">
+      <div>
       {/* Minimal Header */}
       <header className="pt-6 pb-4">
         <div className="max-w-4xl mx-auto px-6">
