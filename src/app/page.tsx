@@ -344,7 +344,7 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-[#E8E6E1]">
+    <div className="min-h-screen bg-[#F7F6F0]">
       <div>
       {/* Minimal Header */}
       <header className="pt-6 pb-4">

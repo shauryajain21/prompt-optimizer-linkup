@@ -358,20 +358,6 @@ export default function ProductListingsPage() {
               <ShoppingCartIcon className="w-8 h-8" />
             </div>
             <div className="flex-1">
-              <div className="flex flex-wrap gap-2 mb-3">
-                <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-linkup-green/10 text-linkup-green">
-                  Linkup
-                </span>
-                <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-700">
-                  Procurement
-                </span>
-                <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-700">
-                  Marketplace
-                </span>
-                <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-700">
-                  Retail
-                </span>
-              </div>
               <h1 className="text-3xl font-bold text-linkup-text mb-4">
                 How to enrich product listings with Linkup
               </h1>
