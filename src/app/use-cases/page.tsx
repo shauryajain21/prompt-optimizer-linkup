@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 type IconComponent = ({ className }: { className?: string }) => React.ReactNode;
 
 interface UseCase {
   id: string;
   title: string;
+  shortTitle: string;
   description: string;
   tag: "Linkup" | "Community";
   href: string;
@@ -147,6 +149,7 @@ const useCases: UseCase[] = [
   {
     id: "crm-enrichment",
     title: "How to enrich your CRM with Linkup",
+    shortTitle: "CRM Enrichment",
     description: "Automate company and contact research to populate your CRM with firmographic data, funding history, and more.",
     tag: "Linkup",
     href: "/use-cases/crm-enrichment",
@@ -155,17 +158,9 @@ const useCases: UseCase[] = [
     featured: true,
   },
   {
-    id: "legal-agents",
-    title: "How to power legal agents with Linkup",
-    description: "Enable legal AI agents to search regulatory updates, public filings, legal news, and authoritative sources in real-time.",
-    tag: "Linkup",
-    href: "/use-cases/legal-agents",
-    enabled: true,
-    Icon: ScaleIcon,
-  },
-  {
     id: "news-search",
     title: "How to search for news with Linkup",
+    shortTitle: "News Search",
     description: "Track competitors, research markets, monitor regulatory changes, and stay informed with powerful news search.",
     tag: "Linkup",
     href: "/use-cases/news-search",
@@ -175,6 +170,7 @@ const useCases: UseCase[] = [
   {
     id: "supplier-research",
     title: "How to research suppliers with Linkup",
+    shortTitle: "Supplier Research",
     description: "Automate supplier discovery, price comparisons, due diligence checks, and procurement research at scale.",
     tag: "Linkup",
     href: "/use-cases/supplier-research",
@@ -182,69 +178,92 @@ const useCases: UseCase[] = [
     Icon: TruckIcon,
   },
   {
-    id: "company-profiler",
-    title: "Company Profiler",
-    description: "Feed your AI grounding data it can trust to make critical business decisions.",
+    id: "legal-agents",
+    title: "How to power legal agents with Linkup",
+    shortTitle: "Legal Agents",
+    description: "Enable legal AI agents to search regulatory updates, public filings, legal news, and authoritative sources in real-time.",
     tag: "Linkup",
-    href: "#",
-    enabled: false,
+    href: "/use-cases/legal-agents",
+    enabled: true,
+    Icon: ScaleIcon,
+  },
+  {
+    id: "product-listings",
+    title: "How to enrich product listings with Linkup",
+    shortTitle: "Product Listings",
+    description: "Automatically enrich product catalogs with pricing, specs, and availability data from across the web.",
+    tag: "Linkup",
+    href: "/use-cases/product-listings",
+    enabled: true,
     Icon: ChartIcon,
   },
   {
-    id: "sales-research",
-    title: "Sales Prospect Research & Outreach Preparation",
-    description: "Transform your sales and outreach process by automating deep, personalized research on prospects.",
-    tag: "Community",
-    href: "#",
-    enabled: false,
-    Icon: UsersIcon,
-  },
-  {
-    id: "news-monitoring",
-    title: "AI News Monitoring with Linkup",
-    description: "A fully automated system for monitoring news on any topic you choose.",
-    tag: "Community",
-    href: "#",
-    enabled: false,
-    Icon: NewspaperIcon,
-  },
-  {
-    id: "agent-workflows",
-    title: "Build / Deploy Agent Workflows",
-    description: "Launch agentic workflows with an open source, user-friendly environment for devs and agents.",
-    tag: "Community",
-    href: "#",
-    enabled: false,
+    id: "coding-agents",
+    title: "How to power coding agents with Linkup",
+    shortTitle: "Coding Agents",
+    description: "Enable AI coding assistants to search documentation, APIs, and code examples in real-time.",
+    tag: "Linkup",
+    href: "/use-cases/coding-agents",
+    enabled: true,
     Icon: WorkflowIcon,
   },
   {
-    id: "market-research",
-    title: "Competitive Market Research",
-    description: "Gather comprehensive intelligence on competitors, market trends, and industry dynamics.",
+    id: "people-lists",
+    title: "How to enrich people lists with Linkup",
+    shortTitle: "People Lists",
+    description: "Enrich contact lists with professional profiles, social data, and verified contact information.",
     tag: "Linkup",
-    href: "#",
-    enabled: false,
+    href: "/use-cases/people-lists",
+    enabled: true,
+    Icon: UsersIcon,
+  },
+  {
+    id: "onboarding-workflows",
+    title: "How to build personalized onboarding workflows with Linkup",
+    shortTitle: "Onboarding Workflows",
+    description: "Create personalized onboarding experiences by researching new users, customers, or employees.",
+    tag: "Linkup",
+    href: "/use-cases/onboarding-workflows",
+    enabled: true,
     Icon: TargetIcon,
+  },
+  {
+    id: "company-research",
+    title: "How to research companies with Linkup",
+    shortTitle: "Company Research",
+    description: "Deep-dive into any company with comprehensive research on financials, news, leadership, and more.",
+    tag: "Linkup",
+    href: "/use-cases/company-research",
+    enabled: true,
+    Icon: BuildingIcon,
   },
 ];
 
 export default function UseCasesPage() {
   const featuredCase = useCases.find(uc => uc.featured);
-  const otherCases = useCases.filter(uc => !uc.featured);
+  const enabledCases = useCases.filter(uc => uc.enabled && !uc.featured);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-linkup-cream/30 to-linkup-bg">
+    <div className="min-h-screen bg-gradient-to-br from-[#f5f0e6] via-[#ebe6dc] to-[#e0dbd1] relative">
+      {/* Dotted pattern overlay */}
+      <div className="absolute inset-0 dotted-bg opacity-60 pointer-events-none" />
+
+      {/* Content wrapper */}
+      <div className="relative z-10">
       {/* Minimal Header */}
       <header className="pt-6 pb-4">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-linkup-green rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">L</span>
-              </div>
-              <span className="font-semibold text-linkup-text">linkup</span>
+            <div className="flex items-center">
+              <Image
+                src="/linkup-logo.png"
+                alt="Linkup"
+                width={120}
+                height={40}
+                className="h-9 w-auto"
+              />
             </div>
-            <nav className="flex items-center gap-5">
+            <nav className="flex items-center gap-4">
               <a
                 href="https://docs.linkup.so"
                 target="_blank"
@@ -257,9 +276,9 @@ export default function UseCasesPage() {
                 href="https://linkup.so"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium text-linkup-green hover:text-linkup-green-hover transition-colors"
+                className="text-sm font-medium bg-[#1a1a1a] text-white px-4 py-2 rounded-full hover:bg-[#2a2a2a] transition-all"
               >
-                Get API Key
+                Get Started Free
               </a>
             </nav>
           </div>
@@ -289,7 +308,7 @@ export default function UseCasesPage() {
         </div>
       </div>
 
-      <main className="max-w-4xl mx-auto px-6 pb-20">
+      <main className="max-w-6xl mx-auto px-6 pb-20">
         {/* Title Section */}
         <div className="text-center mb-10">
           <h1 className="text-2xl font-semibold text-linkup-text mb-2">
@@ -309,8 +328,12 @@ export default function UseCasesPage() {
             </div>
             <Link
               href={featuredCase.href}
-              className="block card p-8 group transition-all duration-300 hover:shadow-lg hover:border-linkup-green/40 hover:scale-[1.01] bg-gradient-to-br from-white to-linkup-cream/50"
+              className="block card p-8 group transition-all duration-300 hover:shadow-lg hover:border-linkup-green/40 hover:scale-[1.01] bg-gradient-to-br from-white to-linkup-cream/50 relative"
             >
+              <span className="absolute top-4 right-4 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-700 flex items-center gap-1">
+                <SparklesIcon className="w-3 h-3" />
+                Popular
+              </span>
               <div className="flex items-start gap-6">
                 <div className="w-14 h-14 bg-linkup-green/10 rounded-2xl flex items-center justify-center text-linkup-green group-hover:bg-linkup-green group-hover:text-white transition-all duration-300">
                   <featuredCase.Icon className="w-6 h-6" />
@@ -324,11 +347,57 @@ export default function UseCasesPage() {
                       {featuredCase.tag}
                     </span>
                   </div>
-                  <p className="text-linkup-text-muted mb-6 leading-relaxed max-w-2xl">
+                  <p className="text-linkup-text-muted mb-4 leading-relaxed max-w-2xl">
                     {featuredCase.description}
                   </p>
+
+                  {/* Preview content */}
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    <span className="px-2.5 py-1 text-xs bg-linkup-cream rounded-lg text-linkup-text-muted">
+                      Enrichment patterns
+                    </span>
+                    <span className="px-2.5 py-1 text-xs bg-linkup-cream rounded-lg text-linkup-text-muted">
+                      Copy-paste prompts
+                    </span>
+                    <span className="px-2.5 py-1 text-xs bg-linkup-cream rounded-lg text-linkup-text-muted">
+                      JSON schemas
+                    </span>
+                    <span className="px-2.5 py-1 text-xs bg-linkup-cream rounded-lg text-linkup-text-muted">
+                      Python code
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mb-6">
+                    <span className="flex items-center gap-2 text-sm font-semibold text-linkup-green">
+                      <span className="w-2 h-2 bg-linkup-green rounded-full"></span>
+                      Company profiles
+                    </span>
+                    <span className="flex items-center gap-2 text-sm font-semibold text-linkup-green">
+                      <span className="w-2 h-2 bg-linkup-green rounded-full"></span>
+                      Funding history
+                    </span>
+                    <span className="flex items-center gap-2 text-sm font-semibold text-linkup-green">
+                      <span className="w-2 h-2 bg-linkup-green rounded-full"></span>
+                      News monitoring
+                    </span>
+                    <span className="flex items-center gap-2 text-sm font-semibold text-linkup-green">
+                      <span className="w-2 h-2 bg-linkup-green rounded-full"></span>
+                      Contact enrichment
+                    </span>
+                  </div>
+
+                  {/* Best for tags */}
+                  <div className="flex items-center gap-2 mb-6">
+                    <span className="text-xs text-linkup-text-muted">Best for:</span>
+                    <span className="text-xs font-medium text-linkup-text">Sales teams</span>
+                    <span className="text-xs text-linkup-text-light">•</span>
+                    <span className="text-xs font-medium text-linkup-text">RevOps</span>
+                    <span className="text-xs text-linkup-text-light">•</span>
+                    <span className="text-xs font-medium text-linkup-text">Growth</span>
+                  </div>
+
                   <div className="flex items-center gap-2 text-linkup-green font-medium">
-                    <span>Read the guide</span>
+                    <span>Read the full guide</span>
                     <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
@@ -341,31 +410,27 @@ export default function UseCasesPage() {
         <div>
           <div className="flex items-center gap-2 mb-4">
             <div className="w-1.5 h-1.5 bg-linkup-text-light rounded-full"></div>
-            <span className="text-xs font-semibold text-linkup-text-muted uppercase tracking-wider">More Use Cases</span>
+            <span className="text-xs font-semibold text-linkup-text-muted uppercase tracking-wider">All Use Cases</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {otherCases.map((useCase) => (
+            {enabledCases.map((useCase) => (
               <Link
                 key={useCase.id}
-                href={useCase.enabled ? useCase.href : "#"}
+                href={useCase.href}
                 className="card p-5 group transition-all duration-300 hover:shadow-md hover:border-linkup-green/30 hover:scale-[1.02] cursor-pointer"
               >
-                <div className="flex items-start gap-4 mb-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 bg-linkup-green/10 text-linkup-green group-hover:bg-linkup-green group-hover:text-white">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 bg-linkup-green/10 text-linkup-green group-hover:bg-linkup-green group-hover:text-white flex-shrink-0">
                     <useCase.Icon className="w-5 h-5" />
                   </div>
-                  <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
-                    useCase.tag === "Linkup"
-                      ? "bg-linkup-green/10 text-linkup-green"
-                      : "bg-gray-100 text-gray-500"
-                  }`}>
-                    {useCase.tag}
-                  </span>
+                  <h3 className="text-lg font-semibold transition-colors text-linkup-text group-hover:text-linkup-green">
+                    {useCase.shortTitle}
+                  </h3>
                 </div>
 
-                <h3 className="text-base font-medium mb-2 transition-colors text-linkup-text group-hover:text-linkup-green">
+                <p className="text-sm text-linkup-text-light mb-2">
                   {useCase.title}
-                </h3>
+                </p>
 
                 <p className="text-sm text-linkup-text-muted leading-relaxed line-clamp-2">
                   {useCase.description}
@@ -379,7 +444,9 @@ export default function UseCasesPage() {
             ))}
           </div>
         </div>
+
       </main>
+      </div>
     </div>
   );
 }

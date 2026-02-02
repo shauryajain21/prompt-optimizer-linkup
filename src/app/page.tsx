@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 function SparklesIcon({ className }: { className?: string }) {
   return (
@@ -325,7 +326,7 @@ export default function Home() {
         {isCompleted ? <CheckIcon className="w-3.5 h-3.5" /> : number}
       </div>
       <div className="flex-1 text-left">
-        <p className={`text-sm font-medium transition-colors duration-200 ${
+        <p className={`text-base font-semibold transition-colors duration-200 ${
           isExpanded ? "text-linkup-text" : "text-linkup-text-muted"
         }`}>
           {title}
@@ -343,18 +344,26 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-linkup-cream/30 to-linkup-bg">
+    <div className="min-h-screen bg-gradient-to-br from-[#f5f0e6] via-[#ebe6dc] to-[#e0dbd1] relative">
+      {/* Dotted pattern overlay */}
+      <div className="absolute inset-0 dotted-bg opacity-60 pointer-events-none" />
+
+      {/* Content wrapper */}
+      <div className="relative z-10">
       {/* Minimal Header */}
       <header className="pt-6 pb-4">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-linkup-green rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">L</span>
-              </div>
-              <span className="font-semibold text-linkup-text">linkup</span>
+            <div className="flex items-center">
+              <Image
+                src="/linkup-logo.png"
+                alt="Linkup"
+                width={120}
+                height={40}
+                className="h-9 w-auto"
+              />
             </div>
-            <nav className="flex items-center gap-5">
+            <nav className="flex items-center gap-4">
               <a
                 href="https://docs.linkup.so"
                 target="_blank"
@@ -367,9 +376,9 @@ export default function Home() {
                 href="https://linkup.so"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium text-linkup-green hover:text-linkup-green-hover transition-colors"
+                className="text-sm font-medium bg-[#1a1a1a] text-white px-4 py-2 rounded-full hover:bg-[#2a2a2a] transition-all"
               >
-                Get API Key
+                Get Started Free
               </a>
             </nav>
           </div>
@@ -401,7 +410,7 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="pb-20">
-        <div className="max-w-2xl mx-auto px-6">
+        <div className="max-w-3xl mx-auto px-6">
           {/* Title Section */}
           <div className="text-center mb-10">
             <h1 className="text-2xl font-semibold text-linkup-text mb-2">
@@ -790,6 +799,7 @@ Examples:
 
         </div>
       </main>
+      </div>
     </div>
   );
 }

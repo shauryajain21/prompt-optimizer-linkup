@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 :root {
   --linkup-green: #6B7C4C;
   --linkup-green-light: #8A9B6E;
@@ -14,7 +12,6 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, sans-serif;
   background-color: #E8E6E1;
   color: #1F2937;
 }
@@ -134,4 +131,24 @@ textarea {
 
 .animate-fadeIn {
   animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Dotted background pattern like Linkup website */
+.dotted-bg {
+  background-image: url('/bg-tile.png');
+  background-repeat: repeat;
+  background-size: 150px 150px;
+}
+
+/* Dark button style */
+.btn-dark {
+  @apply bg-[#1a1a1a] text-white px-6 py-3 rounded-full font-medium transition-all duration-200;
+}
+
+.btn-dark:hover {
+  @apply bg-[#2a2a2a] shadow-lg;
+}
+
+.btn-dark:disabled {
+  @apply opacity-50 cursor-not-allowed;
 }
