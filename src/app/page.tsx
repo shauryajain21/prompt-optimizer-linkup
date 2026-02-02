@@ -346,7 +346,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f5f0e6] via-[#ebe6dc] to-[#e0dbd1] relative">
       {/* Dotted pattern overlay */}
-      <div className="absolute inset-0 dotted-bg opacity-60 pointer-events-none" />
+      <div className="absolute inset-0 dotted-bg opacity-30 pointer-events-none" />
 
       {/* Content wrapper */}
       <div className="relative z-10">
