@@ -64,7 +64,6 @@ You can be explicit in prompts (e.g., "first, find the official website of the A
 - structuredOutputSchema: JSON schema string when outputType is "structured"
 
 **Filtering Parameters:**
-- includeImages: Include relevant images in results (boolean)
 - fromDate: Filter results from date (YYYY-MM-DD format)
 - toDate: Filter results until date (YYYY-MM-DD format)
 - includeDomains: Only search specific domains (up to 100 domains)
@@ -164,7 +163,6 @@ Only ask 1-2 focused questions. Don't ask if the query is already clear and spec
   "recommendedDepth": "standard" or "deep",
   "explanation": "Brief explanation of why this optimization improves the query",
   "suggestedParameters": {
-    "includeImages": boolean (include relevant images),
     "fromDate": "YYYY-MM-DD" (filter results from this date),
     "toDate": "YYYY-MM-DD" (filter results until this date),
     "includeDomains": ["domain1.com"] (only search these domains, up to 100),

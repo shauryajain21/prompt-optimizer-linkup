@@ -457,15 +457,10 @@ export default function CRMEnrichmentPage() {
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">deep</code></td>
                     <td className="py-4 px-4">Company research requires multiple retrieval steps</td>
                   </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
+                  <tr className="hover:bg-linkup-cream/30 transition-colors">
                     <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">outputType</code></td>
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">structuredOutput</code></td>
                     <td className="py-4 px-4">Returns data in your exact CRM schema</td>
-                  </tr>
-                  <tr className="hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">includeImages</code></td>
-                    <td className="py-4 px-4"><code className="bg-gray-100 px-2 py-1 rounded text-gray-600 font-medium">true</code></td>
-                    <td className="py-4 px-4">Useful for company logos (optional)</td>
                   </tr>
                 </tbody>
               </table>
@@ -890,7 +885,7 @@ def enrich_company(company_name: str, domain: str, api_key: str) -> dict:
         json={
             "q": prompt,
             "depth": "deep",
-            "outputType": "structuredOutput",
+            "output_type": "structured",
             "structuredOutputSchema": json.dumps(schema)
         }
     )

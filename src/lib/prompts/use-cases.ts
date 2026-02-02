@@ -186,7 +186,6 @@ People enrichment powers everything from sales prospecting to recruiting pipelin
 **Recommended Configuration for People Enrichment:**
 - depth: \`standard\` for getting profiles, \`deep\` for extracting further context
 - outputType: \`structured\` (consistent format for CRM/ATS import)
-- includeImages: \`true\` (optional, useful for profile photos)
 
 ### Professional Profile Enrichment
 - **Depth**: deep
@@ -236,7 +235,6 @@ Company research is foundational to nearly every business workflow—sales prosp
 **Recommended Configuration for Company Research:**
 - depth: \`deep\` (company research requires gathering from multiple sources)
 - outputType: \`structured\` (consistent format for CRM, databases, automation)
-- includeImages: \`true\` (optional, useful for logos and product images)
 - fromDate: Set for news/funding (90 days typical)
 
 ### Comprehensive Company Profile
@@ -285,7 +283,6 @@ CRM enrichment is one of the most impactful applications of Linkup's agentic sea
 **Recommended Configuration for CRM Enrichment:**
 - depth: \`deep\` (company research typically requires multiple retrieval steps)
 - outputType: \`structured\` (returns data in your exact CRM schema)
-- includeImages: \`true\` (optional, useful for company logos)
 
 ### Company Record Enrichment
 - **Depth**: deep
@@ -389,7 +386,6 @@ Procurement teams spend significant time researching suppliers, comparing quotes
 **Recommended Configuration for Procurement:**
 - depth: \`deep\` (procurement requires finding listings, then scraping pages for prices and specs)
 - outputType: \`structured\` (returns data ready for comparison and system import)
-- includeImages: \`true\` (useful for product verification and catalogs)
 - includeDomains: (optional) Restrict to approved supplier directories or marketplaces
 
 ### Supplier Discovery

@@ -487,11 +487,6 @@ export default function ProductListingsPage() {
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">structuredOutput</code></td>
                     <td className="py-4 px-4">Returns attributes in your exact catalog schema</td>
                   </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">includeImages</code></td>
-                    <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">true</code></td>
-                    <td className="py-4 px-4">Essential for product imagery</td>
-                  </tr>
                   <tr className="hover:bg-linkup-cream/30 transition-colors">
                     <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">includeDomains</code></td>
                     <td className="py-4 px-4"><code className="bg-blue-50 px-2 py-1 rounded text-blue-600 font-medium whitespace-nowrap">optional</code></td>
@@ -1086,7 +1081,7 @@ Return only the fields that were missing, with their values and source URLs.`}
                     { title: "Always include model numbers and UPCs", desc: "These are the most reliable identifiers for finding exact matches" },
                     { title: "Prioritize manufacturer sources", desc: "Official product pages are the authoritative source for specs and descriptions" },
                     { title: "Use deep with explicit scrape instructions", desc: "Product specs live on detail pages, not search snippets" },
-                    { title: "Request images with includeImages: true", desc: "Product imagery is often the most valuable enrichment" },
+                    { title: "Request image URLs in your schema", desc: "Product imagery is often the most valuable enrichment" },
                     { title: "Normalize units in your prompt", desc: "Tell Linkup to convert to your standard units (inches, pounds, etc.)" },
                     { title: "Use includeDomains for price monitoring", desc: "Restrict to specific competitor sites for cleaner results" },
                   ].map((item, idx) => (
@@ -1259,8 +1254,7 @@ def enrich_product_listing(
             "q": prompt,
             "depth": "deep",
             "outputType": "structuredOutput",
-            "structuredOutputSchema": json.dumps(schema),
-            "includeImages": True
+            "structuredOutputSchema": json.dumps(schema)
         }
     )
 

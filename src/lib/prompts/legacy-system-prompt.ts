@@ -59,7 +59,6 @@ You can be explicit in prompts (e.g., "first, find the official website of the A
 - structuredOutputSchema: JSON schema string when outputType is "structured"
 
 **Filtering Parameters:**
-- includeImages: Include relevant images in results (boolean)
 - fromDate: Filter results from date (YYYY-MM-DD format)
 - toDate: Filter results until date (YYYY-MM-DD format)
 - includeDomains: Only search specific domains (up to 100 domains)
@@ -152,7 +151,6 @@ You can be explicit in prompts (e.g., "first, find the official website of the A
 - **Depth**: deep (find listings → scrape for prices/specs)
 - **Output**: structured
 - **Parameters**:
-  - includeImages: true (for product verification)
   - includeDomains: Restrict to trusted marketplaces (thomasnet.com, alibaba.com, grainger.com)
   - includeSources: true (track which supplier each price came from)
 - **Pattern**: ALWAYS scrape listing pages - prices live on pages, not in search snippets
@@ -162,7 +160,6 @@ You can be explicit in prompts (e.g., "first, find the official website of the A
 - **Depth**: deep (manufacturer page → datasheet → specs)
 - **Output**: structured
 - **Parameters**:
-  - includeImages: true (essential for product imagery)
   - includeDomains: Restrict to manufacturer site if known
   - includeSources: true (verify official source)
 - **Pattern**: Find official manufacturer page first, then extract
@@ -173,7 +170,6 @@ You can be explicit in prompts (e.g., "first, find the official website of the A
 - **Output**: structured
 - **Parameters**:
   - includeDomains: Target specific retailers (amazon.com, walmart.com, target.com, bestbuy.com)
-  - includeImages: true (for product verification)
   - maxResults: Set based on how many competitors to track
 - **Pattern**: Search multiple retailers, scrape each listing
 - **Example**: "Search for {product} on Amazon, Walmart, Target, Best Buy. For each listing, scrape to extract: retailer, current price, original price, shipping cost, stock availability, active promotions. Verify exact product match via model number or UPC."
@@ -468,7 +464,6 @@ People enrichment powers everything from sales prospecting to recruiting pipelin
 **Recommended Configuration for People Enrichment:**
 - depth: \`standard\` for getting profiles, \`deep\` for extracting further context
 - outputType: \`structured\` (consistent format for CRM/ATS import)
-- includeImages: \`true\` (optional, useful for profile photos)
 
 ### Professional Profile Enrichment
 - **Depth**: deep
@@ -701,7 +696,6 @@ Company research is foundational to nearly every business workflow—sales prosp
 **Recommended Configuration for Company Research:**
 - depth: \`deep\` (company research requires gathering from multiple sources)
 - outputType: \`structured\` (consistent format for CRM, databases, automation)
-- includeImages: \`true\` (optional, useful for logos and product images)
 - fromDate: Set for news/funding (90 days typical)
 
 ### Comprehensive Company Profile
@@ -843,7 +837,6 @@ CRM enrichment is one of the most impactful applications of Linkup's agentic sea
 **Recommended Configuration for CRM Enrichment:**
 - depth: \`deep\` (company research typically requires multiple retrieval steps)
 - outputType: \`structured\` (returns data in your exact CRM schema)
-- includeImages: \`true\` (optional, useful for company logos)
 
 ### Company Record Enrichment
 - **Depth**: deep
@@ -1080,7 +1073,6 @@ Procurement teams spend significant time researching suppliers, comparing quotes
 **Recommended Configuration for Procurement:**
 - depth: \`deep\` (procurement requires finding listings, then scraping pages for prices and specs)
 - outputType: \`structured\` (returns data ready for comparison and system import)
-- includeImages: \`true\` (useful for product verification and catalogs)
 - includeDomains: (optional) Restrict to approved supplier directories or marketplaces
 
 ### Supplier Discovery
@@ -1212,7 +1204,6 @@ Only ask 1-2 focused questions. Don't ask if the query is already clear and spec
   "explanation": "Brief explanation of why this optimization improves the query",
   "suggestedSchema": { ... }, // REQUIRED when outputType is "structured" and no schema was provided - generate an appropriate JSON schema
   "suggestedParameters": {
-    "includeImages": boolean (include relevant images),
     "fromDate": "YYYY-MM-DD" (filter results from this date),
     "toDate": "YYYY-MM-DD" (filter results until this date),
     "includeDomains": ["domain1.com"] (only search these domains, up to 100),

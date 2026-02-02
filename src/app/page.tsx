@@ -79,7 +79,6 @@ interface OptimizedResult {
   clarifyingQuestions?: string[];
   suggestedSchema?: object;
   suggestedParameters?: {
-    includeImages?: boolean;
     fromDate?: string;
     toDate?: string;
     includeDomains?: string[];
@@ -762,11 +761,6 @@ Examples:
                       <div className="bg-linkup-cream/30 rounded-xl p-4 mb-4">
                         <p className="text-xs font-medium text-linkup-text-muted uppercase tracking-wide mb-3">Suggested Parameters</p>
                         <div className="flex flex-wrap gap-2">
-                          {result.suggestedParameters.includeImages && (
-                            <code className="text-xs bg-white px-2.5 py-1.5 rounded-lg text-linkup-green border border-linkup-border/50">
-                              includeImages: true
-                            </code>
-                          )}
                           {result.suggestedParameters.fromDate && (
                             <code className="text-xs bg-white px-2.5 py-1.5 rounded-lg text-linkup-green border border-linkup-border/50">
                               fromDate: &quot;{result.suggestedParameters.fromDate}&quot;

@@ -498,11 +498,6 @@ export default function SupplierResearchPage() {
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">structuredOutput</code></td>
                     <td className="py-4 px-4">Returns data ready for comparison and system import</td>
                   </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">includeImages</code></td>
-                    <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">true</code></td>
-                    <td className="py-4 px-4">Useful for product verification and catalogs</td>
-                  </tr>
                   <tr className="hover:bg-linkup-cream/30 transition-colors">
                     <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">includeDomains</code></td>
                     <td className="py-4 px-4"><code className="bg-gray-100 px-2 py-1 rounded text-gray-600 font-medium">optional</code></td>
@@ -1065,8 +1060,7 @@ def extract_supplier_pricing(
             "q": prompt,
             "depth": "deep",
             "outputType": "structuredOutput",
-            "structuredOutputSchema": json.dumps(schema),
-            "includeImages": True
+            "structuredOutputSchema": json.dumps(schema)
         }
     )
 
