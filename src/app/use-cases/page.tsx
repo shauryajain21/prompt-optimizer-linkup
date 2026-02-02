@@ -103,6 +103,29 @@ function TargetIcon({ className }: { className?: string }) {
   );
 }
 
+function ScaleIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3v18"/>
+      <path d="M1 9l5.5 6 5.5-6"/>
+      <path d="M11.5 9l5.5 6 5.5-6"/>
+      <path d="M1 9h11"/>
+      <path d="M12 9h11"/>
+    </svg>
+  );
+}
+
+function TruckIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 3h15v13H1z"/>
+      <path d="M16 8h4l3 3v5h-7V8z"/>
+      <circle cx="5.5" cy="18.5" r="2.5"/>
+      <circle cx="18.5" cy="18.5" r="2.5"/>
+    </svg>
+  );
+}
+
 function ArrowRightIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -130,6 +153,33 @@ const useCases: UseCase[] = [
     enabled: true,
     Icon: BuildingIcon,
     featured: true,
+  },
+  {
+    id: "legal-agents",
+    title: "How to power legal agents with Linkup",
+    description: "Enable legal AI agents to search regulatory updates, public filings, legal news, and authoritative sources in real-time.",
+    tag: "Linkup",
+    href: "/use-cases/legal-agents",
+    enabled: true,
+    Icon: ScaleIcon,
+  },
+  {
+    id: "news-search",
+    title: "How to search for news with Linkup",
+    description: "Track competitors, research markets, monitor regulatory changes, and stay informed with powerful news search.",
+    tag: "Linkup",
+    href: "/use-cases/news-search",
+    enabled: true,
+    Icon: NewspaperIcon,
+  },
+  {
+    id: "supplier-research",
+    title: "How to research suppliers with Linkup",
+    description: "Automate supplier discovery, price comparisons, due diligence checks, and procurement research at scale.",
+    tag: "Linkup",
+    href: "/use-cases/supplier-research",
+    enabled: true,
+    Icon: TruckIcon,
   },
   {
     id: "company-profiler",
