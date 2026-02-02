@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --linkup-green: #6B7C4C;
-  --linkup-green-light: #8A9B6E;
-  --linkup-green-dark: #5A6940;
+  --linkup-green: #1C411E;
+  --linkup-green-light: #2D5A30;
+  --linkup-green-dark: #142E16;
   --linkup-cream: #F5F3EF;
   --linkup-beige: #EBE8E2;
-  --linkup-olive: #4A5A2C;
+  --linkup-olive: #1C411E;
 }
 
 body {

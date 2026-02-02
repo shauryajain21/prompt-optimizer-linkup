@@ -10,11 +10,11 @@ const config: Config = {
     extend: {
       colors: {
         linkup: {
-          green: "#6B7C4C",
-          "green-light": "#8A9B6E",
-          "green-dark": "#5A6940",
-          "green-hover": "#7D8F5A",
-          olive: "#4A5A2C",
+          green: "#1C411E",
+          "green-light": "#2D5A30",
+          "green-dark": "#142E16",
+          "green-hover": "#254A27",
+          olive: "#1C411E",
           cream: "#F5F3EF",
           beige: "#EBE8E2",
           sand: "#D9D5CC",
