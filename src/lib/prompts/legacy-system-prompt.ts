@@ -1210,6 +1210,7 @@ Only ask 1-2 focused questions. Don't ask if the query is already clear and spec
   "optimizedPrompt": "The optimized prompt text",
   "recommendedDepth": "standard" or "deep",
   "explanation": "Brief explanation of why this optimization improves the query",
+  "suggestedSchema": { ... }, // REQUIRED when outputType is "structured" and no schema was provided - generate an appropriate JSON schema
   "suggestedParameters": {
     "includeImages": boolean (include relevant images),
     "fromDate": "YYYY-MM-DD" (filter results from this date),
@@ -1221,6 +1222,14 @@ Only ask 1-2 focused questions. Don't ask if the query is already clear and spec
     "includeSources": boolean (for structured output only)
   }
 }
+
+**Schema Generation (when outputType is "structured" and no schema provided):**
+Generate a JSON schema that captures the data being requested. Use:
+- "type": "object" at the root
+- Appropriate types: string, number, integer, boolean, array, object
+- Nested objects for hierarchical data
+- Arrays when multiple items are expected
+- "description" fields to clarify each property's purpose
 
 ## When to Ask Questions vs Generate Directly
 

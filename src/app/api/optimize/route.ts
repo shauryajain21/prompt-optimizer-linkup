@@ -41,13 +41,25 @@ export async function POST(request: NextRequest) {
     let userMessage = `## User's Original Query:\n${prompt}\n\n`;
 
     userMessage += `## User's Preferences:\n`;
-    userMessage += `- Output Type: ${outputType || "searchResults"}\n`;
+    userMessage += `- Output Type: ${outputType || "sourcedAnswer"}\n`;
     userMessage += `- Depth Preference: ${depthPreference || "auto"}\n`;
 
-    // Include schema if structuredOutput is selected
-    if (outputType === "structuredOutput" && schema) {
-      userMessage += `\n## Output Schema:\nThe user wants the output to follow this JSON schema:\n\`\`\`json\n${schema}\n\`\`\`\n`;
-      userMessage += `Make sure the optimized prompt instructs the search to return data matching this schema structure.\n`;
+    // Handle structured output schema
+    if (outputType === "structuredOutput") {
+      if (schema && schema.trim()) {
+        // User provided a schema - use it
+        userMessage += `\n## Output Schema:\nThe user wants the output to follow this JSON schema:\n\`\`\`json\n${schema}\n\`\`\`\n`;
+        userMessage += `Make sure the optimized prompt instructs the search to return data matching this schema structure.\n`;
+      } else {
+        // No schema provided - request auto-generation
+        userMessage += `\n## Schema Auto-Generation Required:\n`;
+        userMessage += `The user selected structured output but did not provide a schema. Generate an appropriate JSON schema based on their query.\n`;
+        userMessage += `Requirements:\n`;
+        userMessage += `- Root type must be "object"\n`;
+        userMessage += `- Use appropriate types (string, number, integer, boolean, array, object)\n`;
+        userMessage += `- Add descriptions to clarify each field's purpose\n`;
+        userMessage += `Return the schema in your "suggestedSchema" field.\n`;
+      }
     }
 
     userMessage += `\n`;

@@ -90,12 +90,14 @@ type SectionId = "prompt" | "parameters" | "clarification" | "result";
 
 export default function Home() {
   const [inputPrompt, setInputPrompt] = useState("");
-  const [outputType, setOutputType] = useState<OutputType>("searchResults");
+  const [outputType, setOutputType] = useState<OutputType>("sourcedAnswer");
   const [depthPreference, setDepthPreference] = useState<DepthPreference>("auto");
   const [result, setResult] = useState<OptimizedResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [schemaCopied, setSchemaCopied] = useState(false);
+  const [schemaExpanded, setSchemaExpanded] = useState(true);
 
   const [conversation, setConversation] = useState<Message[]>([]);
   const [clarifyingAnswer, setClarifyingAnswer] = useState("");
@@ -245,7 +247,7 @@ export default function Home() {
 
   const handleStartOver = () => {
     setInputPrompt("");
-    setOutputType("searchResults");
+    setOutputType("sourcedAnswer");
     setDepthPreference("auto");
     setSchema("");
     setResult(null);
@@ -266,6 +268,17 @@ export default function Home() {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       console.error("Failed to copy");
+    }
+  };
+
+  const handleCopySchema = async () => {
+    if (!result?.suggestedSchema) return;
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(result.suggestedSchema, null, 2));
+      setSchemaCopied(true);
+      setTimeout(() => setSchemaCopied(false), 2000);
+    } catch {
+      console.error("Failed to copy schema");
     }
   };
 
@@ -485,11 +498,23 @@ Examples:
 
                   {outputType === "structuredOutput" && (
                     <div className="mb-5">
-                      <label className="block text-xs font-medium text-linkup-text-muted uppercase tracking-wide mb-2">Output Schema</label>
+                      <div className="flex items-center gap-2 mb-2">
+                        <label className="text-xs font-medium text-linkup-text-muted uppercase tracking-wide">Output Schema</label>
+                        <span className="text-xs text-linkup-green bg-linkup-green/10 px-2 py-0.5 rounded-full">Optional</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2 bg-blue-50 rounded-lg mb-2">
+                        <svg className="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p className="text-xs text-blue-700">
+                          Leave blank to auto-generate a schema based on your query
+                        </p>
+                      </div>
                       <textarea
                         value={schema}
                         onChange={(e) => setSchema(e.target.value)}
-                        placeholder={`{
+                        placeholder={`Example:
+{
   "type": "object",
   "properties": {
     "company_name": { "type": "string" },
@@ -675,6 +700,52 @@ Examples:
                       </div>
                     </div>
 
+                    {result.suggestedSchema && (
+                      <div className="bg-linkup-cream/30 rounded-xl mb-4 overflow-hidden">
+                        <button
+                          onClick={() => setSchemaExpanded(!schemaExpanded)}
+                          className="w-full flex items-center justify-between p-4 hover:bg-linkup-cream/50 transition-colors"
+                        >
+                          <p className="text-xs font-medium text-linkup-text-muted uppercase tracking-wide">
+                            Generated Schema
+                          </p>
+                          <ChevronDownIcon className={`w-4 h-4 text-linkup-text-light transition-transform duration-200 ${
+                            schemaExpanded ? "rotate-180" : ""
+                          }`} />
+                        </button>
+                        {schemaExpanded && (
+                          <div className="px-4 pb-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <p className="text-xs text-linkup-text-light">
+                                Auto-generated based on your query
+                              </p>
+                              <button
+                                onClick={handleCopySchema}
+                                className="flex items-center gap-1.5 px-2 py-1 text-xs text-linkup-text-muted hover:text-linkup-green rounded transition-colors"
+                              >
+                                {schemaCopied ? (
+                                  <>
+                                    <CheckIcon className="w-3.5 h-3.5 text-linkup-green" />
+                                    <span className="text-linkup-green">Copied</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <CopyIcon className="w-3.5 h-3.5" />
+                                    <span>Copy</span>
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                            <div className="bg-[#1a1a1a] rounded-lg p-4 overflow-x-auto">
+                              <pre className="text-xs text-gray-300 whitespace-pre-wrap font-mono leading-relaxed">
+                                {JSON.stringify(result.suggestedSchema, null, 2)}
+                              </pre>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                     <div className="bg-linkup-cream/30 rounded-xl p-4 mb-4">
                       <p className="text-xs font-medium text-linkup-text-muted uppercase tracking-wide mb-2">Why this optimization</p>
                       <p className="text-sm text-linkup-text leading-relaxed">
@@ -683,7 +754,7 @@ Examples:
                     </div>
 
                     {result.suggestedParameters && Object.keys(result.suggestedParameters).length > 0 && (
-                      <div className="bg-linkup-cream/30 rounded-xl p-4">
+                      <div className="bg-linkup-cream/30 rounded-xl p-4 mb-4">
                         <p className="text-xs font-medium text-linkup-text-muted uppercase tracking-wide mb-3">Suggested Parameters</p>
                         <div className="flex flex-wrap gap-2">
                           {result.suggestedParameters.includeImages && (
