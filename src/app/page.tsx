@@ -757,7 +757,12 @@ Examples:
                       </p>
                     </div>
 
-                    {result.suggestedParameters && Object.keys(result.suggestedParameters).length > 0 && (
+                    {result.suggestedParameters && (
+                      result.suggestedParameters.fromDate ||
+                      result.suggestedParameters.toDate ||
+                      (result.suggestedParameters.includeDomains && result.suggestedParameters.includeDomains.length > 0) ||
+                      (result.suggestedParameters.excludeDomains && result.suggestedParameters.excludeDomains.length > 0)
+                    ) && (
                       <div className="bg-linkup-cream/30 rounded-xl p-4 mb-4">
                         <p className="text-xs font-medium text-linkup-text-muted uppercase tracking-wide mb-3">Suggested Parameters</p>
                         <div className="flex flex-wrap gap-2">
@@ -769,6 +774,16 @@ Examples:
                           {result.suggestedParameters.toDate && (
                             <code className="text-xs bg-white px-2.5 py-1.5 rounded-lg text-linkup-green border border-linkup-border/50">
                               toDate: &quot;{result.suggestedParameters.toDate}&quot;
+                            </code>
+                          )}
+                          {result.suggestedParameters.includeDomains && result.suggestedParameters.includeDomains.length > 0 && (
+                            <code className="text-xs bg-white px-2.5 py-1.5 rounded-lg text-linkup-green border border-linkup-border/50">
+                              includeDomains: [{result.suggestedParameters.includeDomains.map(d => `&quot;${d}&quot;`).join(", ")}]
+                            </code>
+                          )}
+                          {result.suggestedParameters.excludeDomains && result.suggestedParameters.excludeDomains.length > 0 && (
+                            <code className="text-xs bg-white px-2.5 py-1.5 rounded-lg text-linkup-green border border-linkup-border/50">
+                              excludeDomains: [{result.suggestedParameters.excludeDomains.map(d => `&quot;${d}&quot;`).join(", ")}]
                             </code>
                           )}
                         </div>
