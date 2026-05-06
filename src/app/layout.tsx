@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
 const spaceGrotesk = localFont({
   src: "../fonts/SpaceGrotesk-VariableFont_wght.ttf",
   variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
   display: "swap",
 });
 
@@ -35,7 +42,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${spaceGrotesk.variable} font-sans antialiased`}>
+      <body className={`${spaceGrotesk.variable} ${playfair.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>

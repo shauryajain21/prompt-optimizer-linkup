@@ -244,7 +244,7 @@ export default function UseCasesPage() {
   const enabledCases = useCases.filter(uc => uc.enabled && !uc.featured);
 
   return (
-    <div className="min-h-screen bg-[#F7F6F0]">
+    <div className="min-h-screen bg-linkup-bg">
       <div>
       {/* Minimal Header */}
       <header className="pt-6 pb-4">
@@ -272,7 +272,7 @@ export default function UseCasesPage() {
                 href="https://linkup.so"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium bg-[#1a1a1a] text-white px-4 py-2 rounded-full hover:bg-[#2a2a2a] transition-all"
+                className="text-sm font-medium bg-[#5A5A5A] text-white px-4 py-2 rounded-full hover:bg-[#3F3F3F] transition-all"
               >
                 Get Started Free
               </a>
