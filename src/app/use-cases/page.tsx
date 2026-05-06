@@ -256,7 +256,7 @@ export default function UseCasesPage() {
                 alt="Linkup"
                 width={120}
                 height={40}
-                className="h-9 w-auto"
+                className="h-12 w-auto"
               />
             </div>
             <nav className="flex items-center gap-4">

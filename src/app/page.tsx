@@ -277,7 +277,7 @@ export default function Home() {
                 alt="Linkup"
                 width={120}
                 height={40}
-                className="h-9 w-auto"
+                className="h-12 w-auto"
               />
             </div>
             <nav className="flex items-center gap-4">
@@ -355,7 +355,7 @@ export default function Home() {
             <div className="flex items-center justify-between px-5 py-3 border-t border-zinc-100">
               <button
                 onClick={() => setAdvancedOpen(!advancedOpen)}
-                className={`p-2 rounded-lg transition-colors ${
+                className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   advancedOpen
                     ? "bg-zinc-100 text-zinc-900"
                     : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-700"
@@ -363,6 +363,7 @@ export default function Home() {
                 aria-label="Advanced options"
               >
                 <SlidersIcon className="w-5 h-5" />
+                <span>Advanced</span>
               </button>
               <button
                 onClick={handleOptimize}
@@ -385,9 +386,9 @@ export default function Home() {
                   <label className="block text-xs font-medium text-zinc-600 uppercase tracking-wide mb-2">Output Type</label>
                   <div className="grid grid-cols-3 gap-2">
                     {[
-                      { value: "searchResults", label: "Search Results", desc: "Raw JSON" },
-                      { value: "sourcedAnswer", label: "Sourced Answer", desc: "Natural language" },
-                      { value: "structuredOutput", label: "Structured", desc: "Custom schema" },
+                      { value: "searchResults", label: "Search Results", desc: "Raw web data for AI agents" },
+                      { value: "sourcedAnswer", label: "Sourced Answer", desc: "Cited answers for humans" },
+                      { value: "structuredOutput", label: "Structured", desc: "Typed JSON for data pipelines" },
                     ].map((option) => (
                       <button
                         key={option.value}

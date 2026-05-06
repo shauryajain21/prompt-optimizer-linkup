@@ -76,15 +76,26 @@ export async function POST(request: NextRequest) {
     }
 
     const message = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
+      // Claude Sonnet 4.6 — upgraded from claude-sonnet-4-20250514 (Sonnet 4)
+      model: "claude-sonnet-4-6",
       max_tokens: 2048,
+      // Cache the static system prompt. The system prompt is large and
+      // identical across requests, so caching cuts ~90% of input cost on
+      // repeat calls. The dynamic per-request content (user query, output
+      // type, schema, conversation) lives in `messages` and is NOT cached.
+      system: [
+        {
+          type: "text",
+          text: systemPrompt,
+          cache_control: { type: "ephemeral" },
+        },
+      ],
       messages: [
         {
           role: "user",
           content: userMessage,
         },
       ],
-      system: systemPrompt,
     });
 
     // Extract text content from the response
