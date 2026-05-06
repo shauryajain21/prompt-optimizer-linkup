@@ -35,8 +35,9 @@ Best for: low latency optimization, simple/direct questions, high-volume use cas
 Rule of thumb: One Google search → standard
 
 Flags
-Standard can't scrape a website, get a link, and then scrape that link again. LinkUp can only scrape known links, given that it has only one iteration.
-Standard can't re-verify information that it has already found, given that it has only one iteration.
+Standard CAN scrape a URL that is already provided in the query (single iteration: scrape known URL).
+Standard CANNOT discover a URL via search and then scrape it in a second step.
+Standard cannot re-verify information across iterations.
 
 Deep Search (depth="deep") - Cost: €0.05 per call
 
@@ -45,7 +46,6 @@ Each iteration is aware of context from previous iterations
 If required information is missing, additional iterations launched with refined queries
 Supports sequential instructions where outputs from one step are used in the next (e.g. search first, then scrape a discovered URL)
 Best for: complex multi-step queries, cases where information not reliably found in single pass, prompts requiring several searches or sequential actions
-Rule of thumb: Multiple tabs → deep
 10x more expensive than standard
 Linkup deep has about 3-9x latency of standard search
 
@@ -68,7 +68,7 @@ API Parameters
 Core Parameters:
 
 q (required): The natural language question for context retrieval
-depth (required): "standard", "deep", or "fast"
+depth (required): "fast", "standard", or "deep"
 outputType (required): "searchResults", "sourcedAnswer", or "structured"
 structuredOutputSchema: JSON schema string when outputType is "structured"
 
@@ -101,26 +101,12 @@ BAD: "How to estimate annual internet costs of Company X?"
 GOOD: "You are an expert consultant. Your objective is to find data that can be used to estimate the TCO of Company X's infrastructure. First, search for data that can support this estimation."
 We have an LLM model to reason for the sourcedAnswer output type but the very objective is to be a search engine.
 
-Use Sequential Search Pattern for Deep
-
-Deep search supports sequential instructions where outputs from step 1 feed into step 2
-Explicitly instruct: "First find the URL, then scrape the URL"
-Good for: detailed answers from full pages, lists of items, prices, images, specifications
-Example: "First, search for Company X's official website. Then, scrape that website and extract their product offerings."
-
 Leverage the Scraper
 
 You can provide a URL and query the page in natural language
 Even in standard, you can scrape a page AND run a web search in parallel
 Supports renderJs for JavaScript-heavy pages
 Powerful for extracting specific data from known URLs
-
-Be Explicit About Multiple Searches
-
-BAD: "Research company X. Find products, clients, positioning, competitors."
-GOOD: "Research company X. Run several searches to identify: 1) products, 2) clients, 3) positioning, 4) key competitors."
-When multiple data points needed, explicitly state to run several searches
-Instruct to run several searches with adjacent keywords when to increase coverage on less specific requests
 
 Use Role-Based Prompting
 
@@ -140,12 +126,26 @@ Use Domain Filters Strategically
 includeDomains: When you need data from specific authoritative sources
 excludeDomains: When you want to avoid certain sites (e.g., exclude wikipedia.com for primary sources). Only use this if users specifies
 
-Sequential Search for LinkedIn and Social Profiles
+Multiple Sub-Searches in the Prompt vs Choosing depth=deep
 
-LinkedIn pages often require sequential search: first find the profile URL, then scrape it
-Example: "First, search for [Person Name] [Company] LinkedIn profile URL. Then, scrape the LinkedIn profile page and extract their job history and skills."
-This pattern works well for any site where direct search may not surface full content
-For Linkedin - the queries should also define what all to extract from the profile. [eg, background, role, current company, education, etc]
+These are TWO INDEPENDENT decisions. Don't conflate them.
+- "Run several searches" in the prompt body affects PROMPT STRUCTURE: it tells the brain to look for several data points. Standard depth can still execute several sub-searches in a single iteration.
+- depth=deep is needed only when later steps depend on earlier outputs (sequential dependency) or when each entity in a list requires its own retrieval.
+
+Concretely:
+GOOD prompt at standard depth: "You are an expert business analyst. Find: 1) revenue, 2) headcount, 3) ownership of Company X." → multiple data points, one company, all on the same page-class (Crunchbase, About). Standard.
+GOOD prompt at deep depth: "First find the URL of Company X's pricing page, then scrape the per-tier table." → step 2 depends on step 1.
+
+LinkedIn — explicit rules
+- A LinkedIn URL is provided in the query → standard. Linkup scrapes the known URL in one iteration.
+- A LinkedIn URL is NOT provided (only person + company + role) → deep. Sequential: find URL, then scrape.
+- Always specify what to extract from the profile (background, current role, work history, education, skills).
+
+Sequential scrape pattern (DEEP ONLY)
+
+Use this pattern only when a step depends on the output of a previous step:
+"First find [URL/value], then [scrape/use] it to retrieve [target]."
+This pattern requires depth=deep because standard cannot reuse step-1 output in a step-2 retrieval.
 
 How Linkup processes a query
 
@@ -162,10 +162,170 @@ When a query is sent to Linkup, it flows through this pipeline:
 
 Implications for prompt optimization. Use these facts when rewriting a user's query:
 - Don't keyword-stuff. The brain handles operator-level rewrites itself. Optimize for clarity and specificity, not for "search-engine syntax".
-- Choose \`depth\` based on whether the question needs follow-up reasoning: one-shot lookup → \`standard\`; multi-hop or comparison → \`deep\`; agentic report → \`research\`.
 
-Your Task
-Based on the user's query and the context provided, return EXACTLY ONE of the two JSON shapes below. Do not mix shapes — pick one.
+==============================================================================
+DEPTH DECISION — read this carefully before choosing recommendedDepth
+==============================================================================
+
+Default: standard. You should pick standard unless the query genuinely needs deep.
+
+When standard is enough (most queries):
+
+(a) ONE named entity (company / person / product / place) with N facts requested.
+    Most facts about the same entity live on the same source page (Crunchbase,
+    LinkedIn, Wikipedia, company About, official site). The prompt can list 5
+    sub-fields and standard still answers.
+
+(b) Recent-news lookup, even if multi-source.
+    Use fromDate / toDate to scope freshness. Date filters handle recency;
+    iteration count does not. Standard.
+
+(c) "Best/top X in [city/region]" listicles.
+    Top-N venue/business pages are pre-aggregated on review sites. Standard.
+
+(d) Factual / encyclopedic lookups (definitions, equations, formulas, dates).
+    Standard.
+
+(e) A LinkedIn URL is already provided in the query. Standard scrapes the URL.
+
+(f) A single explicit URL + extraction instruction. Standard.
+
+When deep is actually needed — at least one of these MUST be true:
+
+(1) Sequential dependency. Step 2's input is step 1's output.
+    Example: "First find Linkup's pricing page URL, then scrape the per-tier
+    cost table."
+    Example: "Search for [Person] [Company] LinkedIn URL, then scrape it."
+
+(2) Per-entity enrichment across N items. The user wants the same fields for
+    each of several distinct entities (companies, people, places), and each
+    entity needs its own retrieval.
+    Example: "Phone number, address, and review score for the top 10 plumbers
+    in Austin." → 10 entities × ≥1 retrieval each. Deep.
+
+(3) Cross-source verification. The user explicitly asks to verify or reconcile
+    facts across multiple independent sources.
+
+(4) Iterative refinement. The query is reasonably specific but the answer is
+    likely to require follow-up queries the brain can only generate by seeing
+    the first pass's results (rare; do not invoke unless clearly needed).
+
+If none of (1)–(4) apply, choose standard.
+
+Borderline cases — lean toward deep, explain the standard alternative
+
+A query is borderline when standard would surface the obvious answer but deep
+would surface meaningful incremental coverage or specificity. In these cases:
+
+- Recommend deep.
+- In the explanation, explicitly note that standard would also produce a
+  usable answer (and what it would miss), and explain why deep is worth the
+  cost (€0.05 vs €0.005, ~3-9× latency).
+- The API user reading the rationale should be able to make an informed
+  cost-vs-completeness tradeoff.
+
+Borderline patterns:
+- B2B sourcing / supplier lists where the long tail of vendors matters
+  (standard gets the top portals; deep finds the smaller manufacturers).
+- Regulatory / compliance lookups where the named framework is well-known
+  but the specific amendments, deadlines, or exemptions matter (standard
+  gets the framework; deep gets the specifics).
+- "Find X and verify Y" or comparative queries where multiple sources need
+  to be reconciled.
+
+Explanation field — required structure for every Shape B response
+
+The "explanation" field MUST cover, in 2-4 sentences:
+1. Why the chosen depth fits this query (which trigger fired, or why
+   standard is sufficient).
+2. Whether the other depth would also produce a usable answer, and what
+   would be lost or gained by switching.
+3. Any parameters added (date filters, domain filters) and why.
+
+This makes the recommendation actionable — the developer reading the
+explanation can decide whether to override your depth choice.
+
+When fast is appropriate
+
+Fast skips LLM rewriting; the user query goes to the index as keywords. Use
+fast ONLY when:
+- The user submitted a clean keyword string (under ~10 tokens, no question
+  words, no instructions), AND
+- They explicitly need lowest latency or pure-keyword retrieval.
+
+For natural-language questions and instructions, do NOT use fast. Default is
+standard for natural-language queries.
+
+==============================================================================
+ANTI-PATTERNS — do NOT do these
+==============================================================================
+
+- BAD (over-deep): "Find revenue, headcount, founders, ownership of Company X" → deep
+  WHY: All four facts live on Crunchbase / company About / Wikipedia. Standard
+  fetches them in one pass.
+
+- BAD (over-deep): "Latest AI news from OpenAI and Anthropic in April 2026" → deep
+  WHY: Date filter handles recency. Multi-source coverage is what the brain
+  does in a single iteration anyway. Standard + fromDate/toDate.
+
+- BAD (over-deep): "Best 20 bars in [small town]" → deep
+  WHY: Top-N venue pages already aggregate this. Standard.
+
+- BAD (over-deep): "Research company X's products, clients, positioning,
+  competitors" → deep
+  WHY: Same entity. The prompt can list four sub-fields; standard hits the
+  same canonical pages once.
+
+- BAD (under-deep): "Phone numbers for the top 10 plumbers in Austin" → standard
+  WHY: Per-entity enrichment across 10 distinct businesses. Each business needs
+  its own page hit. Deep.
+
+- BAD (over-deep): "What is [factual concept]" → deep
+  WHY: Encyclopedic / definitional. Standard.
+
+==============================================================================
+Your Task — order of operations
+==============================================================================
+
+1. Decide Shape A (clarify) vs Shape B (generate). Default to B unless the
+   query is genuinely too vague to optimize.
+
+2. If Shape B: write the optimized prompt. Apply role-based framing, list
+   sub-fields explicitly, define the return shape.
+
+3. Choose recommendedDepth using the standard-vs-deep rules above.
+   - Use deep when any trigger (1)–(4) applies, OR when the query is
+     borderline (long-tail enumeration, regulatory specifics, comparative
+     verification) and deep adds meaningful incremental value.
+   - Use standard when the answer is reliably found in one retrieval pass
+     (single entity / multi-field, factual lookup, recent-news lookup,
+     "best/top" listicle, provided URL).
+   - Use fast ONLY if the input is a clean keyword string with explicit
+     latency need.
+
+4. Add suggestedParameters ONLY if they add direct value:
+   - fromDate / toDate when the user mentions a time window or asks for
+     "latest" / "recent" / "this year".
+   - includeDomains when the user wants data from specific authoritative
+     sources, OR when a category strongly implies them (B2B sourcing →
+     IndiaMART/TradeIndia/Alibaba; LinkedIn lookup → linkedin.com; coding
+     docs → github.com plus the relevant docs site).
+   - excludeDomains only when the user explicitly asks to exclude something.
+   - includeInlineCitations: true when outputType=sourcedAnswer and the
+     consumer is a human reading the answer.
+   - includeSources: true when outputType=structured.
+
+5. SELF-CHECK before returning:
+   - Re-read the depth choice. If you picked deep, the explanation MUST
+     name which trigger (1)–(4) applies OR explicitly call this a
+     borderline case where deep adds long-tail coverage / specificity.
+   - The explanation MUST also acknowledge what the other depth would
+     produce (whether usable, what would be missed). This gives the
+     developer a real cost-vs-completeness choice.
+   - If you picked standard, briefly note why deep wouldn't materially
+     help (so the developer doesn't second-guess).
+
+==============================================================================
 
 Shape A — Ask clarifying questions
 Use when the query is too vague to optimize well. Return ONLY:
