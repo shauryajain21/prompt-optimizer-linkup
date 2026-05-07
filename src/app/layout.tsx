@@ -1,18 +1,17 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const spaceGrotesk = localFont({
-  src: "../fonts/SpaceGrotesk-VariableFont_wght.ttf",
-  variable: "--font-space-grotesk",
+const seasonSans = localFont({
+  src: "../fonts/SeasonSans-Regular.otf",
+  variable: "--font-season-sans",
   display: "swap",
 });
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
+const seasonMix = localFont({
+  src: "../fonts/SeasonMix-Regular.ttf",
+  variable: "--font-season-mix",
   display: "swap",
 });
 
@@ -42,7 +41,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${spaceGrotesk.variable} ${playfair.variable} font-sans antialiased`}>
+      <body className={`${seasonSans.variable} ${seasonMix.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>

@@ -307,10 +307,8 @@ export default function Home() {
         <div className="max-w-3xl mx-auto px-6">
           {/* Hero */}
           <div className="text-center pt-12 pb-8">
-            <h1 className="font-serif text-6xl md:text-7xl leading-[1.05] tracking-tight text-zinc-950 mb-6">
-              Optimize your
-              <br />
-              prompts
+            <h1 className="font-serif text-4xl md:text-5xl leading-[1.1] tracking-tight text-zinc-950 mb-6 whitespace-nowrap">
+              Optimize your prompts
             </h1>
             <p className="font-sans text-lg text-zinc-700 max-w-md mx-auto leading-relaxed">
               Transform natural language queries into optimized prompts for Linkup&apos;s agentic search API.

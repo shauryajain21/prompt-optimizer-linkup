@@ -248,7 +248,7 @@ export default function UseCasesPage() {
       <div>
       {/* Minimal Header */}
       <header className="pt-6 pb-4">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Image
@@ -281,39 +281,38 @@ export default function UseCasesPage() {
         </div>
       </header>
 
-      {/* Tool Toggle */}
-      <div className="sticky top-0 z-10 pt-2 pb-6">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="flex items-center justify-center">
-            <div className="inline-flex items-center gap-1 p-1 bg-white/80 rounded-full shadow-sm border border-linkup-border/40">
-              <Link
-                href="/"
-                className="flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-all text-linkup-text-muted hover:text-linkup-text hover:bg-linkup-cream/50"
-              >
-                <SmallSparklesIcon className="w-4 h-4" />
-                <span>Optimizer</span>
-              </Link>
-              <button
-                className="flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-all bg-linkup-green text-white shadow-sm"
-              >
-                <BookOpenIcon className="w-4 h-4" />
-                <span>Use Cases</span>
-              </button>
-            </div>
+      <div className="max-w-3xl mx-auto px-6">
+        {/* Hero — matches optimizer page */}
+        <div className="text-center pt-12 pb-8">
+          <h1 className="font-serif text-4xl md:text-5xl leading-[1.1] tracking-tight text-zinc-950 mb-6 whitespace-nowrap">
+            Explore use cases
+          </h1>
+          <p className="font-sans text-lg text-zinc-700 max-w-md mx-auto leading-relaxed">
+            See how teams use Linkup&apos;s agentic search across CRM, news, research, and more.
+          </p>
+        </div>
+
+        {/* Pill Tabs — matches optimizer page */}
+        <div className="flex items-center justify-center mb-10">
+          <div className="inline-flex items-center gap-1 p-1 bg-white rounded-full border border-zinc-200 shadow-sm">
+            <Link
+              href="/"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-all"
+            >
+              <SmallSparklesIcon className="w-4 h-4" />
+              <span>Optimizer</span>
+            </Link>
+            <button
+              className="flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium bg-linkup-gray text-white transition-all"
+            >
+              <BookOpenIcon className="w-4 h-4" />
+              <span>Use Cases</span>
+            </button>
           </div>
         </div>
       </div>
 
       <main className="max-w-6xl mx-auto px-6 pb-20">
-        {/* Title Section */}
-        <div className="text-center mb-10">
-          <h1 className="text-2xl font-semibold text-linkup-text mb-2">
-            Use Cases
-          </h1>
-          <p className="text-linkup-text-muted">
-            Discover how to get the most out of Linkup&apos;s agentic search for your workflows
-          </p>
-        </div>
 
         {/* Featured Use Case */}
         {featuredCase && (

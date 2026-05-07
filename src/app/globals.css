@@ -12,6 +12,10 @@
   --linkup-gray: #5A5A5A;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   background-color: #F4F4F5;
   color: #1F2937;

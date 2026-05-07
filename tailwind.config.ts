@@ -32,8 +32,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
-        serif: ["var(--font-playfair)", "serif"],
+        sans: ["var(--font-season-sans)", "system-ui", "sans-serif"],
+        serif: ["var(--font-season-mix)", "serif"],
       },
     },
   },
