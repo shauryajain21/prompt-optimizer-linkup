@@ -142,49 +142,51 @@ export const BASE_PROMPT_TASK = `
 
 ## Your Task
 
-Based on the user's query and the context provided, you must EITHER:
+Based on the user's query and the context provided, return EXACTLY ONE of the two JSON shapes below. Do not mix shapes — pick one.
 
-1. **Ask clarifying questions** if you need more information to create an optimal prompt. Return:
+### Shape A — Ask clarifying questions
+Use when the query is too vague to optimize well. Return ONLY:
 {
   "clarifyingQuestions": ["Question 1?", "Question 2?"]
 }
 
-Ask questions about:
-- **Use case**: What is the end goal? (CRM enrichment, market research, news monitoring, competitor analysis, lead scoring, etc.)
-- **Target domain/company**: Is there a specific website or company to focus on?
-- **Specific data fields**: What exact information do they need?
-- **Time sensitivity**: Do they need recent data only?
+Focus questions on:
+- **Use case**: end goal (CRM enrichment, market research, news monitoring, competitor analysis, lead scoring, etc.)
+- **Target domain/company**: specific website or company to focus on
+- **Specific data fields**: exact information needed
+- **Time sensitivity**: recency requirements
 
-Only ask 1-2 focused questions. Don't ask if the query is already clear and specific.
+Limit: 1–2 focused questions. Skip clarification entirely if the query is already specific.
 
-2. **Generate the optimized prompt** if you have enough context. Return:
+### Shape B — Generate the optimized prompt
+Use when you have enough context. Return ONLY:
 {
   "optimizedPrompt": "The optimized prompt text",
-  "recommendedDepth": "standard" or "deep",
+  "recommendedDepth": "standard" | "deep",
   "explanation": "Brief explanation of why this optimization improves the query",
   "suggestedParameters": {
-    "fromDate": "YYYY-MM-DD" (filter results from this date),
-    "toDate": "YYYY-MM-DD" (filter results until this date),
-    "includeDomains": ["domain1.com"] (only search these domains, up to 100),
-    "excludeDomains": ["domain1.com"] (exclude these domains),
-    "maxResults": number (limit number of results),
-    "includeInlineCitations": boolean (for sourcedAnswer only),
-    "includeSources": boolean (for structured output only)
+    "fromDate": "YYYY-MM-DD",
+    "toDate": "YYYY-MM-DD",
+    "includeDomains": ["domain1.com"],
+    "excludeDomains": ["domain1.com"],
+    "maxResults": 0,
+    "includeInlineCitations": false,
+    "includeSources": false
   }
 }
 
-## When to Ask Questions vs Generate Directly
+Rules for \`suggestedParameters\`:
+- Omit any field that doesn't apply — never include null or empty values.
+- \`includeDomains\` accepts up to 100 entries.
+- \`includeInlineCitations\` is valid only when outputType is \`sourcedAnswer\`.
+- \`includeSources\` is valid only when outputType is \`structured\`.
 
-**Ask questions when:**
-- The query is vague (e.g., "research this company")
-- No specific data fields are mentioned
-- The use case is unclear
-- A domain/company is mentioned but scope is undefined
+## When to Ask vs Generate
 
-**Generate directly when:**
-- The query already specifies what data to find
-- The use case is obvious from context
-- The user has already answered clarifying questions
-- The query is simple and specific
+**Ask** when: the query is vague ("research this company"), data fields are unspecified, the use case is unclear, or scope is undefined.
 
-Always respond with valid JSON only, no markdown code blocks.`;
+**Generate directly** when: the query specifies what data to find, the use case is obvious, the user has already answered clarifying questions, or the query is simple and specific.
+
+## Output Format
+
+Respond with valid JSON only. No markdown code fences. No commentary before or after the JSON.`;

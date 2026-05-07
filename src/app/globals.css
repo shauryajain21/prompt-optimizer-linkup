@@ -3,16 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --linkup-green: #1C411E;
-  --linkup-green-light: #2D5A30;
-  --linkup-green-dark: #142E16;
+  --linkup-green: #7FA689;
+  --linkup-green-light: #B0CAB6;
+  --linkup-green-dark: #4F6B56;
   --linkup-cream: #F5F3EF;
   --linkup-beige: #EBE8E2;
-  --linkup-olive: #1C411E;
+  --linkup-olive: #7FA689;
+  --linkup-gray: #5A5A5A;
+}
+
+html {
+  scrollbar-gutter: stable;
 }
 
 body {
-  background-color: #F7F6F0;
+  background-color: #F4F4F5;
   color: #1F2937;
 }
 
@@ -83,7 +88,7 @@ textarea {
 }
 
 .sidebar-link.active {
-  background-color: #6B7C4C;
+  background-color: #7FA689;
   color: white;
   font-weight: 500;
 }
@@ -140,13 +145,13 @@ textarea {
   background-size: 150px 150px;
 }
 
-/* Dark button style */
+/* Dark/secondary button style */
 .btn-dark {
-  @apply bg-[#1a1a1a] text-white px-6 py-3 rounded-full font-medium transition-all duration-200;
+  @apply bg-[#5A5A5A] text-white px-6 py-3 rounded-full font-medium transition-all duration-200;
 }
 
 .btn-dark:hover {
-  @apply bg-[#2a2a2a] shadow-lg;
+  @apply bg-[#3F3F3F] shadow-lg;
 }
 
 .btn-dark:disabled {

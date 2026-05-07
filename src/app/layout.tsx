@@ -3,9 +3,15 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
 
-const spaceGrotesk = localFont({
-  src: "../fonts/SpaceGrotesk-VariableFont_wght.ttf",
-  variable: "--font-space-grotesk",
+const seasonSans = localFont({
+  src: "../fonts/SeasonSans-Regular.otf",
+  variable: "--font-season-sans",
+  display: "swap",
+});
+
+const seasonMix = localFont({
+  src: "../fonts/SeasonMix-Regular.ttf",
+  variable: "--font-season-mix",
   display: "swap",
 });
 
@@ -35,7 +41,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${spaceGrotesk.variable} font-sans antialiased`}>
+      <body className={`${seasonSans.variable} ${seasonMix.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>
