@@ -500,18 +500,21 @@ export default function CompanyResearchPage() {
                     <td className="py-4 px-4"><code className="bg-amber-100 px-2 py-1 rounded text-amber-700 font-medium">deep</code></td>
                     <td className="py-4 px-4">Company research requires gathering from multiple sources</td>
                   </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
+                  <tr className="hover:bg-linkup-cream/30 transition-colors">
                     <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">outputType</code></td>
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">structured</code></td>
                     <td className="py-4 px-4">Consistent format for CRM, databases, and automation</td>
                   </tr>
-                  <tr className="hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">fromDate</code></td>
-                    <td className="py-4 px-4"><code className="bg-blue-50 px-2 py-1 rounded text-blue-600 font-medium whitespace-nowrap">90 days typical</code></td>
-                    <td className="py-4 px-4">Surface recent developments for news and funding</td>
-                  </tr>
                 </tbody>
               </table>
+            </div>
+
+            <div className="mt-6">
+              <Callout type="tip">
+                For recent developments, say so in the query — &quot;news from the past 90 days&quot; — rather
+                than reaching for a date filter. The retrieval step acts on that instruction, and you keep
+                undated pages like an About or team page that a date filter would drop.
+              </Callout>
             </div>
           </section>
 
@@ -1563,7 +1566,6 @@ Keep research fast—essential context only.`}
                 dark
                 code={`import requests
 import json
-from datetime import datetime, timedelta
 from typing import Optional
 
 class LinkupCompanyResearch:
@@ -1577,8 +1579,7 @@ class LinkupCompanyResearch:
         self,
         prompt: str,
         schema: dict,
-        depth: str = "deep",
-        from_date: str = None
+        depth: str = "deep"
     ) -> dict:
         params = {
             "q": prompt,
@@ -1586,8 +1587,6 @@ class LinkupCompanyResearch:
             "outputType": "Structured",
             "StructuredSchema": json.dumps(schema)
         }
-        if from_date:
-            params["fromDate"] = from_date
 
         response = requests.post(
             self.base_url,
@@ -1641,8 +1640,7 @@ class LinkupCompanyResearch:
             }
         }
 
-        from_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
-        return self._call_linkup(prompt, schema, depth="standard", from_date=from_date)
+        return self._call_linkup(prompt, schema, depth="standard")
 
     def comprehensive_profile(
         self,
@@ -1718,8 +1716,7 @@ class LinkupCompanyResearch:
             }
         }
 
-        from_date = (datetime.now() - timedelta(days=90)).strftime("%Y-%m-%d")
-        return self._call_linkup(prompt, schema, depth="deep", from_date=from_date)
+        return self._call_linkup(prompt, schema, depth="deep")
 
     def competitive_research(
         self,

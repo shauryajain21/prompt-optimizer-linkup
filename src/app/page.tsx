@@ -104,8 +104,6 @@ interface OptimizedResult {
   clarifyingQuestions?: string[];
   suggestedSchema?: object;
   suggestedParameters?: {
-    fromDate?: string;
-    toDate?: string;
     includeDomains?: string[];
     excludeDomains?: string[];
   };
@@ -629,24 +627,12 @@ export default function Home() {
 
               {/* Suggested Parameters */}
               {result.suggestedParameters && (
-                result.suggestedParameters.fromDate ||
-                result.suggestedParameters.toDate ||
                 (result.suggestedParameters.includeDomains && result.suggestedParameters.includeDomains.length > 0) ||
                 (result.suggestedParameters.excludeDomains && result.suggestedParameters.excludeDomains.length > 0)
               ) && (
                 <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-5">
                   <p className="text-xs font-medium text-zinc-500 uppercase tracking-wide mb-3">Suggested Parameters</p>
                   <div className="flex flex-wrap gap-2">
-                    {result.suggestedParameters.fromDate && (
-                      <code className="text-xs bg-zinc-50 px-2.5 py-1.5 rounded-lg text-linkup-green-dark border border-zinc-200">
-                        fromDate: &quot;{result.suggestedParameters.fromDate}&quot;
-                      </code>
-                    )}
-                    {result.suggestedParameters.toDate && (
-                      <code className="text-xs bg-zinc-50 px-2.5 py-1.5 rounded-lg text-linkup-green-dark border border-zinc-200">
-                        toDate: &quot;{result.suggestedParameters.toDate}&quot;
-                      </code>
-                    )}
                     {result.suggestedParameters.includeDomains && result.suggestedParameters.includeDomains.length > 0 && (
                       <code className="text-xs bg-zinc-50 px-2.5 py-1.5 rounded-lg text-linkup-green-dark border border-zinc-200">
                         includeDomains: [{result.suggestedParameters.includeDomains.map(d => `"${d}"`).join(", ")}]

@@ -482,18 +482,22 @@ export default function ProductListingsPage() {
                     <td className="py-4 px-4"><code className="bg-amber-100 px-2 py-1 rounded text-amber-700 font-medium">deep</code></td>
                     <td className="py-4 px-4">Enrichment requires finding source pages, then scraping detailed specs</td>
                   </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
+                  <tr className="hover:bg-linkup-cream/30 transition-colors">
                     <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">outputType</code></td>
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">structuredOutput</code></td>
                     <td className="py-4 px-4">Returns attributes in your exact catalog schema</td>
                   </tr>
-                  <tr className="hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">includeDomains</code></td>
-                    <td className="py-4 px-4"><code className="bg-blue-50 px-2 py-1 rounded text-blue-600 font-medium whitespace-nowrap">optional</code></td>
-                    <td className="py-4 px-4">Restrict to manufacturer sites or trusted sources</td>
-                  </tr>
                 </tbody>
               </table>
+            </div>
+
+            <div className="mt-6">
+              <Callout type="tip">
+                Ask for manufacturer and trusted sources in the query rather than restricting to them.
+                Reach for <code className="text-linkup-green-dark">includeDomains</code> only when you have an
+                exact list of sites to check — competitor price monitoring, where you already know the
+                retailers, is the clear case for it.
+              </Callout>
             </div>
           </section>
 
@@ -1083,7 +1087,7 @@ Return only the fields that were missing, with their values and source URLs.`}
                     { title: "Use deep with explicit scrape instructions", desc: "Product specs live on detail pages, not search snippets" },
                     { title: "Request image URLs in your schema", desc: "Product imagery is often the most valuable enrichment" },
                     { title: "Normalize units in your prompt", desc: "Tell Linkup to convert to your standard units (inches, pounds, etc.)" },
-                    { title: "Use includeDomains for price monitoring", desc: "Restrict to specific competitor sites for cleaner results" },
+                    { title: "Use includeDomains only for a known site list", desc: "Valid when you supply the exact competitor domains, as in price monitoring" },
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2 text-sm">
                       <span className="text-green-500 mt-0.5">&#10003;</span>
@@ -1318,6 +1322,8 @@ def monitor_competitor_prices(
             "depth": "deep",
             "outputType": "structuredOutput",
             "structuredOutputSchema": json.dumps(schema),
+            # Valid here: the caller supplies the exact retailers to check.
+            # Do not infer a domain list from a preference for "trusted" sources.
             "includeDomains": competitor_domains
         }
     )

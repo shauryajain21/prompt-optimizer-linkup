@@ -483,18 +483,21 @@ export default function PersonalizedOnboardingPage() {
                     <td className="py-4 px-4"><code className="bg-amber-100 px-2 py-1 rounded text-amber-700 font-medium">deep</code> or <code className="bg-blue-50 px-2 py-1 rounded text-blue-600 font-medium">standard</code></td>
                     <td className="py-4 px-4">Match depth to onboarding complexity</td>
                   </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
+                  <tr className="hover:bg-linkup-cream/30 transition-colors">
                     <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">outputType</code></td>
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">structured</code></td>
                     <td className="py-4 px-4">Feed directly into onboarding automation</td>
                   </tr>
-                  <tr className="hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">fromDate</code></td>
-                    <td className="py-4 px-4"><code className="bg-blue-50 px-2 py-1 rounded text-blue-600 font-medium whitespace-nowrap">30-90 days</code></td>
-                    <td className="py-4 px-4">Surface current context, not historical noise</td>
-                  </tr>
                 </tbody>
               </table>
+            </div>
+
+            <div className="mt-6">
+              <Callout type="tip">
+                To surface current context rather than historical noise, say so in the query — &quot;in the
+                last 30 to 90 days&quot; — instead of setting a date filter. That keeps undated but useful
+                pages, like a team or product page, in scope.
+              </Callout>
             </div>
           </section>
 
