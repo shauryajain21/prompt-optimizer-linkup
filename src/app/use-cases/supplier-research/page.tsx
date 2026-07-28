@@ -493,18 +493,21 @@ export default function SupplierResearchPage() {
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">deep</code></td>
                     <td className="py-4 px-4">Finding listings, then scraping pages for prices and specs</td>
                   </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
+                  <tr className="hover:bg-linkup-cream/30 transition-colors">
                     <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">outputType</code></td>
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">structuredOutput</code></td>
                     <td className="py-4 px-4">Returns data ready for comparison and system import</td>
                   </tr>
-                  <tr className="hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">includeDomains</code></td>
-                    <td className="py-4 px-4"><code className="bg-gray-100 px-2 py-1 rounded text-gray-600 font-medium">optional</code></td>
-                    <td className="py-4 px-4">Restrict to approved supplier directories or marketplaces</td>
-                  </tr>
                 </tbody>
               </table>
+            </div>
+
+            <div className="mt-6">
+              <Callout type="tip">
+                Name the directories and marketplaces you trust in the query instead of restricting to them.
+                Supplier research is a long-tail problem: the smaller manufacturer that best fits your
+                requirement is often the one missing from an approved-domain list.
+              </Callout>
             </div>
           </section>
 
@@ -891,7 +894,7 @@ Compile findings to establish a market price range. Note whether the current quo
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-linkup-green mt-0.5 font-bold">4</span>
-                    <span><strong>Use includeDomains for trusted sources</strong> — Restrict to known marketplaces when quality matters</span>
+                    <span><strong>Name trusted marketplaces in the query</strong> — Steers toward known directories without hiding smaller suppliers</span>
                   </li>
                 </ul>
               </div>
@@ -958,7 +961,7 @@ Compile findings to establish a market price range. Note whether the current quo
                   desc: "Ongoing supplier risk monitoring",
                   steps: [
                     "Schedule periodic searches for existing supplier news",
-                    "Use fromDate filter to catch only new information",
+                    "Scope the query to \"published since {last_check_date}\"",
                     "Alert procurement team to risk signals (recalls, financial issues)",
                     "Trigger re-evaluation workflow when red flags appear"
                   ]
@@ -1075,7 +1078,7 @@ def supplier_due_diligence(
     Conduct due diligence research on a supplier
     """
 
-    two_years_ago = (datetime.now() - timedelta(days=730)).strftime("%Y-%m-%d")
+    since = (datetime.now() - timedelta(days=730)).strftime("%B %Y")
 
     prompt = f"""
     You are a procurement risk analyst conducting supplier due diligence.
@@ -1087,7 +1090,7 @@ def supplier_due_diligence(
 
     2. Search for {supplier_name} company registration and legal entity details.
 
-    3. Search for news about {supplier_name} including:
+    3. Search for news about {supplier_name} published since {since}, including:
        - Recalls or quality issues
        - Financial difficulties
        - Regulatory actions
@@ -1095,7 +1098,7 @@ def supplier_due_diligence(
 
     4. Search for {supplier_name} reviews on B2B platforms.
 
-    Flag any red flags discovered.
+    Flag any red flags discovered. Return the source URL for every finding.
     """
 
     schema = {
@@ -1130,8 +1133,7 @@ def supplier_due_diligence(
             "q": prompt,
             "depth": "deep",
             "outputType": "structured",
-            "structuredOutputSchema": json.dumps(schema),
-            "fromDate": two_years_ago
+            "structuredOutputSchema": json.dumps(schema)
         }
     )
 

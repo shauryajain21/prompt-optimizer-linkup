@@ -451,11 +451,11 @@ export default function NewsSearchPage() {
             </a>
             <a href="#date-filters" className="group flex items-center gap-2 px-4 py-2.5 bg-white border border-linkup-border rounded-xl hover:border-linkup-green/40 hover:bg-linkup-green/5 transition-all duration-200">
               <CalendarIcon className="w-4 h-4 text-linkup-text-muted group-hover:text-linkup-green transition-colors" />
-              <span className="text-sm font-medium text-linkup-text group-hover:text-linkup-green transition-colors">Date Filters</span>
+              <span className="text-sm font-medium text-linkup-text group-hover:text-linkup-green transition-colors">Time Windows</span>
             </a>
             <a href="#source-tiers" className="group flex items-center gap-2 px-4 py-2.5 bg-white border border-linkup-border rounded-xl hover:border-linkup-green/40 hover:bg-linkup-green/5 transition-all duration-200">
               <GlobeIcon className="w-4 h-4 text-linkup-text-muted group-hover:text-linkup-green transition-colors" />
-              <span className="text-sm font-medium text-linkup-text group-hover:text-linkup-green transition-colors">Source Tiers</span>
+              <span className="text-sm font-medium text-linkup-text group-hover:text-linkup-green transition-colors">Source Preferences</span>
             </a>
             <a href="#integration" className="group flex items-center gap-2 px-4 py-2.5 bg-white border border-linkup-border rounded-xl hover:border-linkup-green/40 hover:bg-linkup-green/5 transition-all duration-200">
               <LinkIcon className="w-4 h-4 text-linkup-text-muted group-hover:text-linkup-green transition-colors" />
@@ -484,7 +484,7 @@ export default function NewsSearchPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
-                { code: "Date filtering", desc: "fromDate and toDate let you target specific time windows" },
+                { code: "Time scoping", desc: "State the time window in the query to target specific periods" },
                 { code: "structuredOutput", desc: "Returns news in consistent formats for dashboards and alerts" },
                 { code: "Agentic search", desc: "Synthesize across multiple sources and find patterns" },
                 { code: "Deep search", desc: "Follow up on stories by scraping full articles for details" }
@@ -528,23 +528,23 @@ export default function NewsSearchPage() {
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">structuredOutput</code></td>
                     <td className="py-4 px-4">Consistent format for automation and dashboards</td>
                   </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">fromDate / toDate</code></td>
-                    <td className="py-4 px-4"><code className="bg-gray-100 px-2 py-1 rounded text-gray-600 font-medium">based on needs</code></td>
-                    <td className="py-4 px-4">Essential for filtering to relevant time periods</td>
-                  </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">includeDomains</code></td>
-                    <td className="py-4 px-4"><code className="bg-gray-100 px-2 py-1 rounded text-gray-600 font-medium">optional</code></td>
-                    <td className="py-4 px-4">Restrict to trusted news sources</td>
-                  </tr>
                   <tr className="hover:bg-linkup-cream/30 transition-colors">
                     <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">excludeDomains</code></td>
                     <td className="py-4 px-4"><code className="bg-gray-100 px-2 py-1 rounded text-gray-600 font-medium">optional</code></td>
-                    <td className="py-4 px-4">Filter out low-quality or irrelevant sources</td>
+                    <td className="py-4 px-4">Only when you have a specific domain you need kept out</td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+
+            <div className="mt-6">
+              <Callout type="tip">
+                Express the time window and your source preferences in the query itself rather than as
+                filters. Linkup&apos;s search is agentic, so &quot;announced in the last 30 days&quot; and
+                &quot;prefer Reuters, Bloomberg, and the FT&quot; steer retrieval while still allowing
+                relevant coverage from sources you did not think to name. A hard domain filter silently
+                discards everything else.
+              </Callout>
             </div>
           </section>
 
@@ -1133,7 +1133,7 @@ Exclude routine mentions (e.g., standard bylines, boilerplate leadership bios).`
                 <ul className="space-y-3 text-sm text-linkup-text-muted">
                   <li className="flex items-start gap-3">
                     <span className="text-linkup-green mt-0.5 font-bold">1</span>
-                    <span><strong>Use date filters</strong> — News without time bounds might return outdated content</span>
+                    <span><strong>State the time window in the query</strong> — News without time bounds might return outdated content</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-linkup-green mt-0.5 font-bold">2</span>
@@ -1141,7 +1141,7 @@ Exclude routine mentions (e.g., standard bylines, boilerplate leadership bios).`
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-linkup-green mt-0.5 font-bold">3</span>
-                    <span><strong>Use includeDomains for quality control</strong> — Restrict to trusted publications when accuracy matters</span>
+                    <span><strong>Name trusted publications in the query</strong> — Steers retrieval toward quality sources without discarding the rest</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-linkup-green mt-0.5 font-bold">4</span>
@@ -1179,15 +1179,15 @@ Exclude routine mentions (e.g., standard bylines, boilerplate leadership bios).`
             </div>
           </section>
 
-          {/* Date Filters */}
+          {/* Time Windows */}
           <section id="date-filters" className="card p-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 bg-linkup-green/10 rounded-xl flex items-center justify-center">
                 <CalendarIcon className="w-5 h-5 text-linkup-green" />
               </div>
               <div>
-                <h2 className="text-2xl font-semibold text-linkup-text">Working with Date Filters</h2>
-                <p className="text-sm text-linkup-text-muted">Date filtering is critical for news search</p>
+                <h2 className="text-2xl font-semibold text-linkup-text">Scoping Time Windows</h2>
+                <p className="text-sm text-linkup-text-muted">Put the time period in the query, not in a filter</p>
               </div>
             </div>
 
@@ -1196,40 +1196,43 @@ Exclude routine mentions (e.g., standard bylines, boilerplate leadership bios).`
                 <thead>
                   <tr className="border-b-2 border-linkup-border">
                     <th className="text-left py-3 px-4 font-semibold text-linkup-text">Need</th>
-                    <th className="text-left py-3 px-4 font-semibold text-linkup-text">Parameters</th>
+                    <th className="text-left py-3 px-4 font-semibold text-linkup-text">Say this in the query</th>
                   </tr>
                 </thead>
                 <tbody className="text-linkup-text-muted">
                   <tr className="border-b border-linkup-border-light">
                     <td className="py-3 px-4">Last 24 hours</td>
-                    <td className="py-3 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">fromDate: &quot;&#123;yesterday&#125;&quot;</code></td>
+                    <td className="py-3 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">published in the last 24 hours</code></td>
                   </tr>
                   <tr className="border-b border-linkup-border-light">
                     <td className="py-3 px-4">Last 7 days</td>
-                    <td className="py-3 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">fromDate: &quot;&#123;7_days_ago&#125;&quot;</code></td>
+                    <td className="py-3 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">published in the past 7 days</code></td>
                   </tr>
                   <tr className="border-b border-linkup-border-light">
                     <td className="py-3 px-4">Last 30 days</td>
-                    <td className="py-3 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">fromDate: &quot;&#123;30_days_ago&#125;&quot;</code></td>
+                    <td className="py-3 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">published in the last 30 days</code></td>
                   </tr>
                   <tr className="border-b border-linkup-border-light">
                     <td className="py-3 px-4">Specific week</td>
-                    <td className="py-3 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">fromDate: &quot;&#123;week_start&#125;&quot;, toDate: &quot;&#123;week_end&#125;&quot;</code></td>
+                    <td className="py-3 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">published between 3 and 9 March 2026</code></td>
                   </tr>
                   <tr className="border-b border-linkup-border-light">
                     <td className="py-3 px-4">Since last check</td>
-                    <td className="py-3 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">fromDate: &quot;&#123;last_run_timestamp&#125;&quot;</code></td>
+                    <td className="py-3 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">published since &#123;last_run_date&#125;</code></td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4">Historical research</td>
-                    <td className="py-3 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">fromDate: &quot;&#123;start&#125;&quot;, toDate: &quot;&#123;end&#125;&quot;</code></td>
+                    <td className="py-3 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">published between &#123;start&#125; and &#123;end&#125;</code></td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
             <Callout type="tip">
-              Use ISO 8601 format (YYYY-MM-DD) for dates. For monitoring, store your last successful run timestamp and use it as fromDate. For event research, start with a narrow window around the event, then expand if needed.
+              Because the search is agentic, the retrieval step reads and acts on the time period stated in
+              your query. For monitoring, interpolate your last successful run date straight into the query
+              string. For event research, start with a narrow window around the event, then widen it if you
+              come up short.
             </Callout>
           </section>
 
@@ -1240,52 +1243,32 @@ Exclude routine mentions (e.g., standard bylines, boilerplate leadership bios).`
                 <GlobeIcon className="w-5 h-5 text-linkup-green" />
               </div>
               <div>
-                <h2 className="text-2xl font-semibold text-linkup-text">Source Quality Tiers (Examples)</h2>
-                <p className="text-sm text-linkup-text-muted">Consider restricting to quality sources for critical use cases</p>
+                <h2 className="text-2xl font-semibold text-linkup-text">Source Quality Preferences (Examples)</h2>
+                <p className="text-sm text-linkup-text-muted">Name the publications you trust inside the query</p>
               </div>
             </div>
 
             <div className="space-y-6">
               <CodeBlock
                 title="Tier 1 — Major Business Publications"
-                language="json"
-                code={`{
-  "includeDomains": [
-    "reuters.com",
-    "bloomberg.com",
-    "wsj.com",
-    "ft.com",
-    "nytimes.com",
-    "economist.com"
-  ]
-}`}
+                language="text"
+                code={`Prefer coverage from Reuters, Bloomberg, the Wall Street Journal,
+the Financial Times, the New York Times, and The Economist.
+Return the source URL for every finding.`}
               />
 
               <CodeBlock
                 title="Tier 2 — Tech & Startup Coverage"
-                language="json"
-                code={`{
-  "includeDomains": [
-    "techcrunch.com",
-    "theverge.com",
-    "wired.com",
-    "arstechnica.com",
-    "venturebeat.com"
-  ]
-}`}
+                language="text"
+                code={`Prefer coverage from TechCrunch, The Verge, Wired, Ars Technica,
+and VentureBeat. Return the source URL for every finding.`}
               />
 
               <CodeBlock
                 title="Tier 3 — Industry Trade Publications (Healthcare Example)"
-                language="json"
-                code={`{
-  "includeDomains": [
-    "statnews.com",
-    "fiercehealthcare.com",
-    "healthcaredive.com",
-    "modernhealthcare.com"
-  ]
-}`}
+                language="text"
+                code={`Prefer coverage from STAT News, Fierce Healthcare, Healthcare Dive,
+and Modern Healthcare. Return the source URL for every finding.`}
               />
 
               <CodeBlock
@@ -1299,6 +1282,15 @@ Exclude routine mentions (e.g., standard bylines, boilerplate leadership bios).`
   ]
 }`}
               />
+            </div>
+
+            <div className="mt-6">
+              <Callout type="tip">
+                Stating a preference beats locking to a domain list. The retrieval step will favour the
+                outlets you name while still surfacing a relevant trade publication or regulator statement
+                you would not have thought to include. Reach for a hard domain filter only when you have a
+                specific site you must have, or must avoid.
+              </Callout>
             </div>
           </section>
 
@@ -1321,7 +1313,7 @@ Exclude routine mentions (e.g., standard bylines, boilerplate leadership bios).`
                   desc: "Automated daily news digests",
                   steps: [
                     "Schedule daily job (e.g., 6 AM)",
-                    "Set fromDate = yesterday, toDate = today",
+                    "Scope the query to \"published in the last 24 hours\"",
                     "Call Linkup for each monitored entity/topic",
                     "Deduplicate across queries",
                     "Score/rank by relevance and sentiment",
@@ -1333,7 +1325,7 @@ Exclude routine mentions (e.g., standard bylines, boilerplate leadership bios).`
                   desc: "Immediate notifications for important news",
                   steps: [
                     "Run frequent checks (hourly or more)",
-                    "Set fromDate = last_check_timestamp",
+                    "Interpolate last_check_date into the query as \"published since ...\"",
                     "Filter for high-priority signals (negative sentiment, specific keywords)",
                     "Trigger immediate alerts for matches",
                     "Update last_check_timestamp"
@@ -1344,7 +1336,7 @@ Exclude routine mentions (e.g., standard bylines, boilerplate leadership bios).`
                   desc: "Comprehensive weekly briefings",
                   steps: [
                     "Schedule weekly job",
-                    "Set fromDate = 7 days ago",
+                    "Scope the query to \"published in the past 7 days\"",
                     "Use deep search for comprehensive coverage",
                     "Generate executive briefing format",
                     "Include trend analysis across the week",

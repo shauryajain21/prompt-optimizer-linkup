@@ -490,7 +490,7 @@ export default function CodingAgentsPage() {
                 { code: "deep search", desc: "Find documentation, then scrape full pages for complete context" },
                 { code: "structured output", desc: "Returns code examples and API specs in formats agents can consume" },
                 { code: "agentic retrieval", desc: "Navigates official docs, GitHub, Stack Overflow, and forums automatically" },
-                { code: "fromDate filtering", desc: "Surface recent solutions and avoid deprecated approaches" }
+                { code: "version scoping", desc: "Name the version or timeframe in the query to avoid deprecated approaches" }
               ].map((item, idx) => (
                 <div key={idx} className="p-4 bg-linkup-cream/50 rounded-xl">
                   <code className="text-sm font-semibold text-linkup-green">{item.code}</code>
@@ -526,23 +526,22 @@ export default function CodingAgentsPage() {
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">standard</code> or <code className="bg-amber-100 px-2 py-1 rounded text-amber-700 font-medium">deep</code></td>
                     <td className="py-4 px-4">Simple doc lookups work with standard; complex troubleshooting benefits from deep</td>
                   </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
+                  <tr className="hover:bg-linkup-cream/30 transition-colors">
                     <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">outputType</code></td>
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">structured</code></td>
                     <td className="py-4 px-4">Agents need structured data they can parse and act on</td>
                   </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">includeDomains</code></td>
-                    <td className="py-4 px-4"><code className="bg-blue-50 px-2 py-1 rounded text-blue-600 font-medium whitespace-nowrap">trusted sources</code></td>
-                    <td className="py-4 px-4">Avoid low-quality or outdated code examples</td>
-                  </tr>
-                  <tr className="hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">fromDate</code></td>
-                    <td className="py-4 px-4"><code className="bg-blue-50 px-2 py-1 rounded text-blue-600 font-medium whitespace-nowrap">recent solutions</code></td>
-                    <td className="py-4 px-4">Especially important for fast-moving frameworks</td>
-                  </tr>
                 </tbody>
               </table>
+            </div>
+
+            <div className="mt-6">
+              <Callout type="tip">
+                Name your trusted documentation sites and the library version directly in the query rather
+                than pinning them as domain and date filters. Fast-moving ecosystems are exactly where a
+                hard filter hurts: the answer often lives in a migration guide, changelog, or issue thread
+                on a domain you did not list.
+              </Callout>
             </div>
           </section>
 
@@ -667,24 +666,13 @@ Prioritize official documentation over third-party tutorials.`}
                   />
 
                   <CodeBlock
-                    title="trusted-documentation-domains.json (Example)"
-                    language="json"
-                    code={`{
-  "includeDomains": [
-    "docs.python.org",
-    "developer.mozilla.org",
-    "docs.microsoft.com",
-    "cloud.google.com",
-    "docs.aws.amazon.com",
-    "reactjs.org",
-    "vuejs.org",
-    "docs.djangoproject.com",
-    "fastapi.tiangolo.com",
-    "nextjs.org",
-    "kubernetes.io",
-    "docs.docker.com"
-  ]
-}`}
+                    title="documentation-source-preference.txt (Example)"
+                    language="text"
+                    code={`Prefer official documentation: docs.python.org, developer.mozilla.org,
+docs.microsoft.com, cloud.google.com, docs.aws.amazon.com, reactjs.org,
+vuejs.org, docs.djangoproject.com, fastapi.tiangolo.com, nextjs.org,
+kubernetes.io, and docs.docker.com.
+Return the source URL for every snippet or API detail.`}
                   />
                 </div>
               </div>
@@ -782,20 +770,11 @@ Return the most likely solutions with implementation details.`}
                   />
 
                   <CodeBlock
-                    title="troubleshooting-domains.json (Example)"
-                    language="json"
-                    code={`{
-  "includeDomains": [
-    "stackoverflow.com",
-    "github.com",
-    "dev.to",
-    "hashnode.com",
-    "reddit.com/r/programming",
-    "reddit.com/r/webdev",
-    "reddit.com/r/node",
-    "reddit.com/r/python"
-  ]
-}`}
+                    title="troubleshooting-source-preference.txt (Example)"
+                    language="text"
+                    code={`Prefer Stack Overflow, GitHub issues and discussions, dev.to, Hashnode,
+and the programming, webdev, node, and python subreddits.
+Return the source URL for every proposed fix.`}
                   />
                 </div>
               </div>
@@ -1212,18 +1191,11 @@ Return all known security issues with remediation guidance.`}
                   />
 
                   <CodeBlock
-                    title="security-research-domains.json (Example)"
-                    language="json"
-                    code={`{
-  "includeDomains": [
-    "nvd.nist.gov",
-    "github.com/advisories",
-    "cve.mitre.org",
-    "snyk.io",
-    "security.snyk.io",
-    "huntr.dev"
-  ]
-}`}
+                    title="security-source-preference.txt (Example)"
+                    language="text"
+                    code={`Prefer the National Vulnerability Database, GitHub Security Advisories,
+CVE/MITRE, Snyk, and huntr.dev.
+Return the advisory URL and CVE identifier for every finding.`}
                   />
                 </div>
               </div>
@@ -1257,11 +1229,11 @@ Return all known security issues with remediation guidance.`}
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-linkup-green mt-0.5 font-bold">2</span>
-                    <span><strong>Use includeDomains for trusted sources</strong> — avoid low-quality code that introduces bugs or security issues</span>
+                    <span><strong>Name trusted sources in the query</strong> — steers away from low-quality code without hiding the rest of the web</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-linkup-green mt-0.5 font-bold">3</span>
-                    <span><strong>Set fromDate for fast-moving ecosystems</strong> — React, Next.js, Python packages change rapidly</span>
+                    <span><strong>State the version or timeframe in the query</strong> — React, Next.js, and Python packages change rapidly</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-linkup-green mt-0.5 font-bold">4</span>
@@ -1311,88 +1283,48 @@ Return all known security issues with remediation guidance.`}
             </Callout>
           </section>
 
-          {/* Domain Allowlists */}
+          {/* Source Preferences */}
           <section id="domains" className="card p-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 bg-linkup-green/10 rounded-xl flex items-center justify-center">
                 <GlobeIcon className="w-5 h-5 text-linkup-green" />
               </div>
               <div>
-                <h2 className="text-2xl font-semibold text-linkup-text">Domain Allowlists (Example)</h2>
-                <p className="text-sm text-linkup-text-muted">Trusted source domains by category</p>
+                <h2 className="text-2xl font-semibold text-linkup-text">Source Preferences (Example)</h2>
+                <p className="text-sm text-linkup-text-muted">Trusted sources by category, phrased for the query</p>
               </div>
             </div>
 
             <div className="space-y-6">
               <CodeBlock
                 title="Official Documentation"
-                language="json"
-                code={`{
-  "includeDomains": [
-    "docs.python.org",
-    "developer.mozilla.org",
-    "docs.microsoft.com",
-    "cloud.google.com/docs",
-    "docs.aws.amazon.com",
-    "kubernetes.io/docs",
-    "docs.docker.com",
-    "reactjs.org",
-    "vuejs.org",
-    "angular.io",
-    "nextjs.org",
-    "nodejs.org",
-    "docs.npmjs.com",
-    "pypi.org",
-    "pkg.go.dev",
-    "docs.rs",
-    "rubydoc.info"
-  ]
-}`}
+                language="text"
+                code={`Prefer official documentation: docs.python.org, developer.mozilla.org,
+docs.microsoft.com, Google Cloud docs, AWS docs, Kubernetes docs,
+docs.docker.com, reactjs.org, vuejs.org, angular.io, nextjs.org,
+nodejs.org, docs.npmjs.com, pypi.org, pkg.go.dev, docs.rs,
+and rubydoc.info.`}
               />
 
               <CodeBlock
                 title="Community Q&A"
-                language="json"
-                code={`{
-  "includeDomains": [
-    "stackoverflow.com",
-    "stackexchange.com",
-    "reddit.com/r/programming",
-    "reddit.com/r/webdev",
-    "reddit.com/r/node",
-    "reddit.com/r/python",
-    "reddit.com/r/rust",
-    "reddit.com/r/golang",
-    "dev.to",
-    "hashnode.com"
-  ]
-}`}
+                language="text"
+                code={`Prefer Stack Overflow and Stack Exchange, the programming, webdev, node,
+python, rust, and golang subreddits, dev.to, and Hashnode.`}
               />
 
               <CodeBlock
                 title="GitHub Resources"
-                language="json"
-                code={`{
-  "includeDomains": [
-    "github.com",
-    "raw.githubusercontent.com",
-    "gist.github.com"
-  ]
-}`}
+                language="text"
+                code={`Prefer GitHub repositories, issues, discussions, raw file contents,
+and gists.`}
               />
 
               <CodeBlock
                 title="Security Research"
-                language="json"
-                code={`{
-  "includeDomains": [
-    "nvd.nist.gov",
-    "cve.mitre.org",
-    "github.com/advisories",
-    "snyk.io",
-    "security.snyk.io"
-  ]
-}`}
+                language="text"
+                code={`Prefer the National Vulnerability Database, CVE/MITRE,
+GitHub Security Advisories, and Snyk.`}
               />
             </div>
           </section>
@@ -1490,9 +1422,7 @@ class LinkupCodingAssistant:
         self,
         prompt: str,
         schema: dict,
-        depth: str = "standard",
-        include_domains: list = None,
-        from_date: str = None
+        depth: str = "standard"
     ) -> dict:
         params = {
             "q": prompt,
@@ -1500,10 +1430,6 @@ class LinkupCodingAssistant:
             "outputType": "structured",
             "structuredSchema": json.dumps(schema)
         }
-        if include_domains:
-            params["includeDomains"] = include_domains
-        if from_date:
-            params["fromDate"] = from_date
 
         response = requests.post(
             self.base_url,
@@ -1622,8 +1548,7 @@ class LinkupCodingAssistant:
         return self._call_linkup(
             prompt,
             schema,
-            depth="standard",
-            include_domains=["stackoverflow.com", "github.com"]
+            depth="standard"
         )
 
     def find_code_example(
@@ -1715,8 +1640,7 @@ class LinkupCodingAssistant:
         return self._call_linkup(
             prompt,
             schema,
-            depth="standard",
-            include_domains=["nvd.nist.gov", "github.com/advisories", "snyk.io"]
+            depth="standard"
         )
 
 # Example usage

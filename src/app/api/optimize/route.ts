@@ -1,9 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
-// import { buildSystemPrompt, getMatchedUseCaseIds } from "@/lib/prompts";
 
-// Using legacy full prompt for testing
-import { LEGACY_SYSTEM_PROMPT } from "@/lib/prompts/legacy-system-prompt";
+import { SYSTEM_PROMPT } from "@/lib/prompts/system-prompt";
 
 interface Message {
   role: "user" | "assistant";
@@ -34,11 +32,22 @@ export async function POST(request: NextRequest) {
       apiKey: apiKey,
     });
 
-    // Using legacy full prompt for testing
-    const systemPrompt = LEGACY_SYSTEM_PROMPT;
+    const systemPrompt = SYSTEM_PROMPT;
+
+    // Computed per request rather than at module scope: the server process is
+    // long-lived, so a module-level date would freeze at boot and silently go
+    // stale. Lives in the user message, not the cached system prompt, so it
+    // does not invalidate the prompt cache.
+    const today = new Date().toLocaleDateString("en-US", {
+      timeZone: "UTC",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
 
     // Build the user message with all context
-    let userMessage = `## User's Original Query:\n${prompt}\n\n`;
+    let userMessage = `## Today's Date:\n${today} (UTC)\n\n`;
+    userMessage += `## User's Original Query:\n${prompt}\n\n`;
 
     userMessage += `## User's Preferences:\n`;
     userMessage += `- Output Type: ${outputType || "sourcedAnswer"}\n`;
@@ -132,6 +141,14 @@ export async function POST(request: NextRequest) {
     // If depth preference was set by user, respect it unless it's "auto"
     if (depthPreference && depthPreference !== "auto" && result.recommendedDepth) {
       result.recommendedDepth = depthPreference;
+    }
+
+    // Linkup's guidance is to express time scope in the query text rather than
+    // as a filter, so date filters are never surfaced as suggestions. Enforced
+    // here as well as in the system prompt, since the model can still drift.
+    if (result.suggestedParameters) {
+      delete result.suggestedParameters.fromDate;
+      delete result.suggestedParameters.toDate;
     }
 
     return NextResponse.json(result);

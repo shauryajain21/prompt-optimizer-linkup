@@ -473,8 +473,8 @@ export default function LegalAgentsPage() {
               {[
                 { code: "deep search", desc: "Find regulatory sources, then scrape full text for complete context" },
                 { code: "structured output", desc: "Returns legal information in formats agents can parse and cite" },
-                { code: "fromDate filtering", desc: "Surface recent regulatory changes and case developments" },
-                { code: "includeDomains", desc: "Ensure agents only cite authoritative sources" }
+                { code: "time scoping", desc: "State the period in the query to surface recent regulatory changes" },
+                { code: "source preference", desc: "Name the authoritative bodies you want cited in the query" }
               ].map((item, idx) => (
                 <div key={idx} className="p-4 bg-linkup-cream/50 rounded-xl">
                   <code className="text-sm font-semibold text-linkup-green">{item.code}</code>
@@ -510,23 +510,22 @@ export default function LegalAgentsPage() {
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">deep</code></td>
                     <td className="py-4 px-4">Legal research requires finding sources, then extracting detailed content</td>
                   </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
+                  <tr className="hover:bg-linkup-cream/30 transition-colors">
                     <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">outputType</code></td>
                     <td className="py-4 px-4"><code className="bg-linkup-green/10 px-2 py-1 rounded text-linkup-green font-medium">structured</code></td>
                     <td className="py-4 px-4">Legal agents need structured, citable information</td>
                   </tr>
-                  <tr className="border-b border-linkup-border-light hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">includeDomains</code></td>
-                    <td className="py-4 px-4"><code className="bg-gray-100 px-2 py-1 rounded text-gray-600 font-medium">authoritative sources</code></td>
-                    <td className="py-4 px-4">Critical for legal accuracy and citation integrity</td>
-                  </tr>
-                  <tr className="hover:bg-linkup-cream/30 transition-colors">
-                    <td className="py-4 px-4"><code className="bg-linkup-beige px-2 py-1 rounded text-linkup-green-dark font-medium">fromDate</code></td>
-                    <td className="py-4 px-4"><code className="bg-gray-100 px-2 py-1 rounded text-gray-600 font-medium">based on needs</code></td>
-                    <td className="py-4 px-4">Essential for tracking regulatory changes</td>
-                  </tr>
                 </tbody>
               </table>
+            </div>
+
+            <div className="mt-6">
+              <Callout type="tip">
+                Name the issuing bodies and the time period in the query rather than pinning them as domain
+                and date filters. Citation integrity comes from requiring a source URL for every claim, not
+                from restricting the index. A hard allowlist of .gov domains will miss the state regulator,
+                court opinion, or law-firm analysis that actually answers the question.
+              </Callout>
             </div>
           </section>
 
@@ -647,26 +646,12 @@ Exclude news commentary—return only primary regulatory sources.`}
                   />
 
                   <CodeBlock
-                    title="regulatory-source-domains.json (example)"
-                    language="json"
-                    code={`{
-  "includeDomains": [
-    "federalregister.gov",
-    "regulations.gov",
-    "sec.gov",
-    "ftc.gov",
-    "fda.gov",
-    "epa.gov",
-    "dol.gov",
-    "treasury.gov",
-    "justice.gov",
-    "hhs.gov",
-    "consumerfinance.gov",
-    "occ.gov",
-    "fdic.gov",
-    "federalreserve.gov"
-  ]
-}`}
+                    title="regulatory-source-preference.txt (example)"
+                    language="text"
+                    code={`Prefer primary regulatory sources: the Federal Register, Regulations.gov,
+the SEC, FTC, FDA, EPA, Department of Labor, Treasury, Department of Justice,
+HHS, CFPB, OCC, FDIC, and the Federal Reserve.
+Cite the official document URL for every requirement or deadline.`}
                   />
                 </div>
               </div>
@@ -1420,98 +1405,56 @@ Flag any red flags requiring further investigation.`}
             </Callout>
           </section>
 
-          {/* Domain Allowlists */}
+          {/* Source Preferences */}
           <section id="domains" className="card p-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 bg-linkup-green/10 rounded-xl flex items-center justify-center">
                 <GlobeIcon className="w-5 h-5 text-linkup-green" />
               </div>
               <div>
-                <h2 className="text-2xl font-semibold text-linkup-text">Domain Allowlists (Examples)</h2>
-                <p className="text-sm text-linkup-text-muted">Authoritative source domains by category</p>
+                <h2 className="text-2xl font-semibold text-linkup-text">Source Preferences (Examples)</h2>
+                <p className="text-sm text-linkup-text-muted">Authoritative sources by category, phrased for the query</p>
               </div>
             </div>
 
             <div className="space-y-6">
               <CodeBlock
                 title="US Federal Government"
-                language="json"
-                code={`{
-  "includeDomains": [
-    "federalregister.gov",
-    "regulations.gov",
-    "congress.gov",
-    "govinfo.gov",
-    "sec.gov",
-    "justice.gov",
-    "ftc.gov",
-    "fda.gov",
-    "epa.gov",
-    "dol.gov",
-    "treasury.gov",
-    "irs.gov",
-    "consumerfinance.gov",
-    "occ.gov",
-    "fdic.gov",
-    "federalreserve.gov",
-    "uscourts.gov"
-  ]
-}`}
+                language="text"
+                code={`Prefer US federal primary sources: the Federal Register, Regulations.gov,
+Congress.gov, GovInfo, the SEC, Department of Justice, FTC, FDA, EPA,
+Department of Labor, Treasury, IRS, CFPB, OCC, FDIC, the Federal Reserve,
+and the federal courts.`}
               />
 
               <CodeBlock
                 title="US State Government (Delaware, California, New York)"
-                language="json"
-                code={`{
-  "includeDomains": [
-    "delcode.delaware.gov",
-    "corp.delaware.gov",
-    "leginfo.legislature.ca.gov",
-    "oag.ca.gov",
-    "dos.ny.gov",
-    "ag.ny.gov"
-  ]
-}`}
+                language="text"
+                code={`Prefer state primary sources: the Delaware Code and Division of Corporations,
+California legislative information and the California Attorney General,
+and the New York Department of State and Attorney General.`}
               />
 
               <CodeBlock
                 title="SEC Filings & Corporate Records"
-                language="json"
-                code={`{
-  "includeDomains": [
-    "sec.gov",
-    "sec.gov/cgi-bin/browse-edgar",
-    "efts.sec.gov"
-  ]
-}`}
+                language="text"
+                code={`Prefer SEC primary sources: EDGAR full-text search and the filing documents
+themselves on sec.gov. Cite the accession number and filing URL.`}
               />
 
               <CodeBlock
                 title="Legal News & Analysis (Use Selectively)"
-                language="json"
-                code={`{
-  "includeDomains": [
-    "law360.com",
-    "law.com",
-    "reuters.com/legal",
-    "bloomberglaw.com",
-    "lexology.com",
-    "jdsupra.com"
-  ]
-}`}
+                language="text"
+                code={`Secondary analysis may be used for context only: Law360, Law.com,
+Reuters Legal, Bloomberg Law, Lexology, and JD Supra.
+Always anchor the conclusion to a primary source.`}
               />
 
               <CodeBlock
                 title="International Sources"
-                language="json"
-                code={`{
-  "includeDomains": [
-    "legislation.gov.uk",
-    "eur-lex.europa.eu",
-    "canlii.org",
-    "austlii.edu.au"
-  ]
-}`}
+                language="text"
+                code={`Prefer national primary sources: legislation.gov.uk, EUR-Lex,
+CanLII, and AustLII.`}
               />
             </div>
           </section>
@@ -1605,23 +1548,18 @@ class LinkupLegalAssistant:
         self.api_key = api_key
         self.base_url = "https://api.linkup.so/v1/search"
 
-        # Default to authoritative sources
-        self.gov_domains = [
-            "federalregister.gov",
-            "regulations.gov",
-            "sec.gov",
-            "congress.gov",
-            "govinfo.gov",
-            "justice.gov"
-        ]
+        # Stated as a preference in the query, not pinned as a domain filter,
+        # so a state regulator or court opinion can still surface.
+        self.preferred_sources = (
+            "the Federal Register, Regulations.gov, the SEC, Congress.gov, "
+            "GovInfo, and the Department of Justice"
+        )
 
     def _call_linkup(
         self,
         prompt: str,
         schema: dict,
-        depth: str = "deep",
-        include_domains: list = None,
-        from_date: str = None
+        depth: str = "deep"
     ) -> dict:
         params = {
             "q": prompt,
@@ -1629,10 +1567,6 @@ class LinkupLegalAssistant:
             "outputType": "structured",
             "structuredSchema": json.dumps(schema)
         }
-        if include_domains:
-            params["includeDomains"] = include_domains
-        if from_date:
-            params["fromDate"] = from_date
 
         response = requests.post(
             self.base_url,
@@ -1649,11 +1583,12 @@ class LinkupLegalAssistant:
     ) -> dict:
         """Search for recent regulatory updates"""
 
-        from_date = (datetime.now() - timedelta(days=days_back)).strftime("%Y-%m-%d")
+        since = (datetime.now() - timedelta(days=days_back)).strftime("%d %B %Y")
         agencies_str = ", ".join(agencies)
 
         prompt = f"""
-        Search for recent regulatory developments in {regulatory_area}.
+        Search for regulatory developments in {regulatory_area} published
+        since {since}.
 
         Agencies: {agencies_str}
 
@@ -1664,7 +1599,8 @@ class LinkupLegalAssistant:
         - Enforcement actions and policy statements
 
         For each item, extract title, citation, agency, dates, and summary.
-        Prioritize official government sources only.
+        Prefer {self.preferred_sources}.
+        Return the official source URL for every item.
         """
 
         schema = {
@@ -1689,13 +1625,7 @@ class LinkupLegalAssistant:
             }
         }
 
-        return self._call_linkup(
-            prompt,
-            schema,
-            depth="deep",
-            include_domains=self.gov_domains,
-            from_date=from_date
-        )
+        return self._call_linkup(prompt, schema, depth="deep")
 
     def research_entity(
         self,
@@ -1727,7 +1657,8 @@ class LinkupLegalAssistant:
         3. Search for regulatory actions or sanctions against this entity.
         {litigation_instruction}
 
-        Return only verified information from authoritative sources.
+        Prefer {self.preferred_sources}, plus SEC EDGAR for filings.
+        Return only verified information and the source URL for every field.
         """
 
         schema = {
@@ -1782,12 +1713,7 @@ class LinkupLegalAssistant:
             }
         }
 
-        return self._call_linkup(
-            prompt,
-            schema,
-            depth="deep",
-            include_domains=self.gov_domains + ["sec.gov"]
-        )
+        return self._call_linkup(prompt, schema, depth="deep")
 
     def search_compliance_requirements(
         self,
